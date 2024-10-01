@@ -13,10 +13,18 @@
         <action
             android:id="@+id/to_searchCityFragment"
             app:destination="@id/searchCityFragment" />
+        <action
+            android:id="@+id/to_settingsFragment"
+            app:destination="@id/settingsFragment" />
     </fragment>
     <fragment
         android:id="@+id/searchCityFragment"
         android:name="ru.lonelywh1te.justweather.SearchCityFragment"
         tools:layout="@layout/fragment_search_city" />
+    <fragment
+        android:id="@+id/settingsFragment"
+        android:name="ru.lonelywh1te.justweather.SettingsFragment"
+        android:label="Настройки"
+        tools:layout="@layout/fragment_settings" />
 
 </navigation>

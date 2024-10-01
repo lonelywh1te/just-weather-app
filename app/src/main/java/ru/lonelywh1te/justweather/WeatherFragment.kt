@@ -8,7 +8,9 @@ import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.core.view.MenuProvider
+import androidx.navigation.fragment.findNavController
 import ru.lonelywh1te.justweather.databinding.FragmentWeatherBinding
 
 
@@ -34,11 +36,10 @@ class WeatherFragment : Fragment(), MenuProvider {
 
     override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
         when (menuItem.itemId) {
-            R.id.settings -> {
-                return true
-            }
+            R.id.settings -> findNavController().navigate(R.id.to_settingsFragment)
+            android.R.id.home -> TODO("Location button not yet implemented")
         }
 
-        return false
+        return true
     }
 }
