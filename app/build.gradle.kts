@@ -39,6 +39,9 @@ android {
 }
 
 dependencies {
+    implementation(libs.retrofit2)
+    implementation(libs.kotlinx.serialization)
+    implementation(libs.kotlinx.serialization.converter)
     implementation(libs.androidx.navigation.fragment.ktx)
     implementation(libs.androidx.navigation.ui.ktx)
 

@@ -11,7 +11,9 @@ activity = "1.9.2"
 constraintlayout = "2.1.4"
 
 navigation = "2.8.1"
-
+retrofit2 = "2.11.0"
+kotlinx-serialization = "1.7.3"
+kotlinx-serialization-converter = "1.0.0"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -25,6 +27,9 @@ androidx-constraintlayout = { group = "androidx.constraintlayout", name = "const
 
 androidx-navigation-fragment-ktx = { group = "androidx.navigation", name = "navigation-fragment-ktx", version.ref = "navigation" }
 androidx-navigation-ui-ktx = { group = "androidx.navigation", name = "navigation-ui-ktx", version.ref = "navigation" }
+retrofit2 = { group = "com.squareup.retrofit2", name = "retrofit", version.ref = "retrofit2"}
+kotlinx-serialization = { group = "org.jetbrains.kotlinx", name = "kotlinx-serialization-json", version.ref= "kotlinx-serialization" }
+kotlinx-serialization-converter = { group = "com.jakewharton.retrofit", name = "retrofit2-kotlinx-serialization-converter", version.ref = "kotlinx-serialization-converter" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
