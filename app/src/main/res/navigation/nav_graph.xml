@@ -8,7 +8,7 @@
     <fragment
         android:id="@+id/weatherFragment"
         android:label="Выбрать город"
-        android:name="ru.lonelywh1te.justweather.WeatherFragment"
+        android:name="ru.lonelywh1te.justweather.presentation.fragment.WeatherFragment"
         tools:layout="@layout/fragment_weather" >
         <action
             android:id="@+id/to_searchCityFragment"
@@ -19,11 +19,11 @@
     </fragment>
     <fragment
         android:id="@+id/searchCityFragment"
-        android:name="ru.lonelywh1te.justweather.SearchCityFragment"
+        android:name="ru.lonelywh1te.justweather.presentation.fragment.SearchCityFragment"
         tools:layout="@layout/fragment_search_city" />
     <fragment
         android:id="@+id/settingsFragment"
-        android:name="ru.lonelywh1te.justweather.SettingsFragment"
+        android:name="ru.lonelywh1te.justweather.presentation.fragment.SettingsFragment"
         android:label="Настройки"
         tools:layout="@layout/fragment_settings" />
 

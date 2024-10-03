@@ -1,23 +1,31 @@
-package ru.lonelywh1te.justweather
+package ru.lonelywh1te.justweather.presentation
 
 import android.os.Bundle
 import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupActionBarWithNavController
+import ru.lonelywh1te.justweather.R
 import ru.lonelywh1te.justweather.databinding.ActivityMainBinding
+import ru.lonelywh1te.justweather.presentation.viewmodel.MainActivityViewModel
+
+// TODO: use DI
 
 class MainActivity: AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
     private lateinit var inputMethodManager: InputMethodManager
     private lateinit var navController: NavController
+    private lateinit var viewModel: MainActivityViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
+        viewModel = ViewModelProvider(this)[MainActivityViewModel::class.java]
+
         inputMethodManager = getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
 
         val navHostFragment = supportFragmentManager.findFragmentById(R.id.nav_host) as NavHostFragment

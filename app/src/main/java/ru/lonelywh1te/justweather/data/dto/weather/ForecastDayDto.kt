@@ -1,7 +1,11 @@
 package ru.lonelywh1te.justweather.data.dto.weather
 
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
+
+@Serializable
 data class ForecastDayDto(
-    val date: String,
-    val day: DayDto,
-    val hour: List<HourDto>,
+    @SerialName("date") val date: String,
+    @SerialName("day") val day: DayDto,
+    @SerialName("hour") val hour: List<HourDto>,
 )

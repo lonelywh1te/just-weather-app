@@ -1,7 +1,11 @@
 package ru.lonelywh1te.justweather.data.dto.weather
 
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
+
+@Serializable
 data class WeatherResponse(
-    val location: WeatherLocationDto,
-    val currentWeather: CurrentWeatherDto,
-    val forecast: ForecastDto?,
+    @SerialName("location") val location: WeatherLocationDto,
+    @SerialName("current") val currentWeather: CurrentWeatherDto,
+    @SerialName("forecast") val forecast: ForecastDto? = null,
 )

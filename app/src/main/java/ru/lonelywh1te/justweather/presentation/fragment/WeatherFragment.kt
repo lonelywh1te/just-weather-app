@@ -1,4 +1,4 @@
-package ru.lonelywh1te.justweather
+package ru.lonelywh1te.justweather.presentation.fragment
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -8,9 +8,9 @@ import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.core.view.MenuProvider
 import androidx.navigation.fragment.findNavController
+import ru.lonelywh1te.justweather.R
 import ru.lonelywh1te.justweather.databinding.FragmentWeatherBinding
 
 

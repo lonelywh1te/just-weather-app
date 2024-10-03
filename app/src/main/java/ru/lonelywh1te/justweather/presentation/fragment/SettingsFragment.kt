@@ -1,4 +1,4 @@
-package ru.lonelywh1te.justweather
+package ru.lonelywh1te.justweather.presentation.fragment
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
