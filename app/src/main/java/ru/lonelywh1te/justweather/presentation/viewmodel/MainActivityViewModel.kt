@@ -16,26 +16,22 @@ private const val LOG_TAG = "MainActivityViewModel"
 class MainActivityViewModel(
     private val getCurrentWeatherInfoUseCase: GetCurrentWeatherInfoUseCase
 ): ViewModel() {
-    private val _currentWeatherState = MutableStateFlow<ResponseState<WeatherInfo>>(ResponseState.None())
-    val currentWeatherState: StateFlow<ResponseState<WeatherInfo>> get() = _currentWeatherState
+    private val _currentWeatherState = MutableStateFlow<UIState<WeatherInfo>>(UIState.Init())
+    val currentWeatherState: StateFlow<UIState<WeatherInfo>> get() = _currentWeatherState
 
     fun getCurrentWeatherInfo(locationQuery: String) {
         viewModelScope.launch {
             getCurrentWeatherInfoUseCase.execute(locationQuery).collectLatest { state ->
                 when(state) {
                     is ResponseState.Success<WeatherInfo> -> {
-                        Log.d(LOG_TAG, state.data.toString())
+                        _currentWeatherState.value = UIState.Success(state.data)
                     }
                     is ResponseState.Error -> {
-                        Log.d(LOG_TAG, state.errorCode.toString())
-                        Log.d(LOG_TAG, "", state.exception)
+                        _currentWeatherState.value = UIState.Error(state.errorCode, state.exception)
                     }
-
                     is ResponseState.InProgress -> {
-                        Log.d(LOG_TAG, "LOADING DATA")
+                        _currentWeatherState.value = UIState.Loading()
                     }
-
-                    is ResponseState.None -> {}
                 }
 
             }
@@ -45,4 +41,11 @@ class MainActivityViewModel(
     init {
         getCurrentWeatherInfo("Владивосток")
     }
+}
+
+sealed class UIState<T> {
+    class Init<T>: UIState<T>()
+    class Loading<T>: UIState<T>()
+    data class Success<T>(val weatherInfo: WeatherInfo): UIState<T>()
+    data class Error<T>(val errorCode: Int?, val exception: Throwable?): UIState<T>()
 }
