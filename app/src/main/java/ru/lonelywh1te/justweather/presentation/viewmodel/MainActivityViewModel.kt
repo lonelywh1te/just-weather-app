@@ -7,21 +7,17 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
-import ru.lonelywh1te.justweather.data.WeatherInfoRepositoryImpl
 import ru.lonelywh1te.justweather.domain.models.WeatherInfo
 import ru.lonelywh1te.justweather.domain.states.ResponseState
 import ru.lonelywh1te.justweather.domain.usecases.GetCurrentWeatherInfoUseCase
 
-// TODO: use DI
-
 private const val LOG_TAG = "MainActivityViewModel"
 
-class MainActivityViewModel(): ViewModel() {
+class MainActivityViewModel(
+    private val getCurrentWeatherInfoUseCase: GetCurrentWeatherInfoUseCase
+): ViewModel() {
     private val _currentWeatherState = MutableStateFlow<ResponseState<WeatherInfo>>(ResponseState.None())
     val currentWeatherState: StateFlow<ResponseState<WeatherInfo>> get() = _currentWeatherState
-
-    private val repository = WeatherInfoRepositoryImpl()
-    private val getCurrentWeatherInfoUseCase = GetCurrentWeatherInfoUseCase(repository)
 
     fun getCurrentWeatherInfo(locationQuery: String) {
         viewModelScope.launch {

@@ -2,7 +2,6 @@ package ru.lonelywh1te.justweather.data
 
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
-import ru.lonelywh1te.justweather.BuildConfig
 import ru.lonelywh1te.justweather.data.utils.toWeatherInfo
 import ru.lonelywh1te.justweather.domain.WeatherInfoRepository
 import ru.lonelywh1te.justweather.domain.models.WeatherInfo
@@ -10,11 +9,8 @@ import ru.lonelywh1te.justweather.domain.states.ResponseState
 
 private const val LOG_TAG = "WeatherRepositoryImpl"
 
-// TODO: use DI
+class WeatherInfoRepositoryImpl(private val weatherApi: WeatherApi): WeatherInfoRepository {
 
-class WeatherInfoRepositoryImpl(
-    private val weatherApi: WeatherApi = weatherApi(BuildConfig.WEATHER_BASE_URL, BuildConfig.WEATHER_API_KEY)
-): WeatherInfoRepository {
     override fun getCurrentWeatherInfo(locationQuery: String): Flow<ResponseState<WeatherInfo>> = flow {
         emit(ResponseState.InProgress())
 

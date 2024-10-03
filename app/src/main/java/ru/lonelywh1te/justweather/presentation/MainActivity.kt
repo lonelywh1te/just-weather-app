@@ -9,6 +9,8 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupActionBarWithNavController
+import org.koin.androidx.viewmodel.ext.android.getViewModel
+import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.lonelywh1te.justweather.R
 import ru.lonelywh1te.justweather.databinding.ActivityMainBinding
 import ru.lonelywh1te.justweather.presentation.viewmodel.MainActivityViewModel
@@ -24,7 +26,7 @@ class MainActivity: AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
-        viewModel = ViewModelProvider(this)[MainActivityViewModel::class.java]
+        viewModel = getViewModel()
 
         inputMethodManager = getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
 
