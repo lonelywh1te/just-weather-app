@@ -13,6 +13,7 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
+import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -20,6 +21,7 @@ import ru.lonelywh1te.justweather.R
 import ru.lonelywh1te.justweather.databinding.FragmentWeatherBinding
 import ru.lonelywh1te.justweather.domain.models.WeatherInfo
 import ru.lonelywh1te.justweather.presentation.state.UIState
+import ru.lonelywh1te.justweather.presentation.utils.UiUtils
 import ru.lonelywh1te.justweather.presentation.viewmodel.WeatherFragmentViewModel
 
 
@@ -31,7 +33,7 @@ class WeatherFragment : Fragment(), MenuProvider {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         if (savedInstanceState == null) {
-            viewModel.getCurrentWeatherInfo("Владивосток")
+            viewModel.getForecastWeatherInfo("Владивосток")
         }
     }
 
@@ -59,17 +61,40 @@ class WeatherFragment : Fragment(), MenuProvider {
         when (state) {
             is UIState.Loading -> {} // TODO: Show loading
             is UIState.Success -> updateUI(state.data)
-            is UIState.Error -> {} // TODO: Show error
-            is UIState.Init -> {} // TODO: nothing
+            is UIState.Error -> showError(state)
+            else -> return // TODO: nothing
         }
     }
 
+    // TODO: hardcode!!
     private fun updateUI(weatherInfo: WeatherInfo) {
-        binding.tvLastUpdatedValue.text = weatherInfo.current.lastUpdated.toString()
+        binding.tvLastUpdatedValue.text = UiUtils.dateFormat(weatherInfo.current.lastUpdated, "dd.MM.yyyy HH:mm")
         binding.tvCondition.text = weatherInfo.current.condition.text
         binding.tvCurrentTemp.text = weatherInfo.current.tempC.toString()
         binding.tvWindSpeedValue.text = weatherInfo.current.windKph.toString()
         binding.tvUvValue.text = weatherInfo.current.uv.toString()
+
+        weatherInfo.forecast?.let { forecast ->
+            binding.tvMinTemp.text = UiUtils.toTempPattern(forecast.forecastDays[0].day.minTempC)
+            binding.tvMaxTemp.text = UiUtils.toTempPattern(forecast.forecastDays[0].day.maxTempC)
+
+            val forecastDaysValuesList = listOf(
+                binding.tvTodayMinMaxTemp,
+                binding.tvTomorrowMinMaxTemp,
+                binding.tvThirdMinMaxTemp,
+            )
+
+            forecastDaysValuesList.forEachIndexed { index, textView ->
+                textView.text = UiUtils.toMinMaxPattern(forecast.forecastDays[index].day.minTempC, forecast.forecastDays[index].day.maxTempC)
+            }
+        }
+    }
+
+    // TODO: show by view?
+    private fun showError(state: UIState.Error) {
+        Snackbar
+            .make(binding.root, state.exception?.message.toString(), Snackbar.LENGTH_LONG)
+            .show()
     }
 
     override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {

@@ -16,6 +16,7 @@ import ru.lonelywh1te.justweather.domain.models.ForecastDay
 import ru.lonelywh1te.justweather.domain.models.Hour
 import ru.lonelywh1te.justweather.domain.models.WeatherInfo
 import ru.lonelywh1te.justweather.domain.models.WeatherLocation
+import kotlin.math.roundToInt
 
 fun WeatherResponse.toWeatherInfo(): WeatherInfo {
     return WeatherInfo(
@@ -41,10 +42,10 @@ fun ForecastDayDto.toForecastDay(): ForecastDay {
 
 fun DayDto.toDay(): Day {
     return Day(
-        maxTempC = this.maxTempC,
-        maxTempF = this.maxTempF,
-        minTempC = this.minTempC,
-        minTempF = this.minTempF,
+        maxTempC = this.maxTempC.roundToInt(),
+        maxTempF = this.maxTempF.roundToInt(),
+        minTempC = this.minTempC.roundToInt(),
+        minTempF = this.minTempF.roundToInt(),
         condition = this.condition.toCondition(),
         uv = this.uv
     )
@@ -53,13 +54,13 @@ fun DayDto.toDay(): Day {
 fun HourDto.toHour(): Hour {
     return Hour(
         time = this.time,
-        tempC = this.tempC,
-        tempF = this.tempF,
+        tempC = this.tempC.roundToInt(),
+        tempF = this.tempF.roundToInt(),
         condition = this.condition.toCondition(),
         windKph = this.windKph,
         windMph = this.windMph,
-        feelsLikeC = this.feelsLikeC,
-        feelsLikeF = this.feelsLikeF,
+        feelsLikeC = this.feelsLikeC.roundToInt(),
+        feelsLikeF = this.feelsLikeF.roundToInt(),
         isDay = this.isDay,
         uv = this.uv
     )
@@ -80,13 +81,13 @@ fun WeatherLocationDto.toWeatherLocation(): WeatherLocation {
 fun CurrentWeatherDto.toCurrentWeather(): CurrentWeather {
     return CurrentWeather(
         lastUpdated = this.lastUpdated,
-        tempC = this.tempC,
-        tempF = this.tempF,
+        tempC = this.tempC.roundToInt(),
+        tempF = this.tempF.roundToInt(),
         condition = this.condition.toCondition(),
         windKph = this.windKph,
         windMph = this.windMph,
-        feelsLikeC = this.feelsLikeC,
-        feelsLikeF = this.feelsLikeF,
+        feelsLikeC = this.feelsLikeC.roundToInt(),
+        feelsLikeF = this.feelsLikeF.roundToInt(),
         uv = this.uv,
     )
 }

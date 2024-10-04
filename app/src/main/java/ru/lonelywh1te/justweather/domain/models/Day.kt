@@ -1,10 +1,10 @@
 package ru.lonelywh1te.justweather.domain.models
 
 data class Day(
-    val maxTempC: Double,
-    val maxTempF: Double,
-    val minTempC: Double,
-    val minTempF: Double,
+    val maxTempC: Int,
+    val maxTempF: Int,
+    val minTempC: Int,
+    val minTempF: Int,
     val condition: Condition,
     val uv: Double,
 )

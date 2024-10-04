@@ -4,12 +4,12 @@ import java.util.Date
 
 data class CurrentWeather(
     val lastUpdated: Date,
-    val tempC: Double,
-    val tempF: Double,
+    val tempC: Int,
+    val tempF: Int,
     val condition: Condition,
     val windKph: Double,
     val windMph: Double,
-    val feelsLikeC: Double,
-    val feelsLikeF: Double,
+    val feelsLikeC: Int,
+    val feelsLikeF: Int,
     val uv: Double,
 )

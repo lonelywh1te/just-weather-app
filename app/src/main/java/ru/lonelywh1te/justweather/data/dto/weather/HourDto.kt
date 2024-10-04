@@ -3,6 +3,7 @@ package ru.lonelywh1te.justweather.data.dto.weather
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import ru.lonelywh1te.justweather.data.utils.DateSerializer
+import ru.lonelywh1te.justweather.data.utils.IntToBooleanSerializer
 import java.util.Date
 
 @Serializable
@@ -15,8 +16,11 @@ data class HourDto(
     val tempC: Double,
     @SerialName("temp_f")
     val tempF: Double,
+
+    @Serializable(IntToBooleanSerializer::class)
     @SerialName("is_day")
     val isDay: Boolean,
+
     @SerialName("condition")
     val condition: ConditionDto,
     @SerialName("wind_kph")

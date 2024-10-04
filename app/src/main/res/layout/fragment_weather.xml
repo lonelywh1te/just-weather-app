@@ -139,7 +139,7 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="прогноз на 5 дней"
+        android:text="прогноз на 3 дня"
         android:textSize="18sp"
         android:textStyle="italic"
         android:paddingVertical="15dp"/>
@@ -164,10 +164,11 @@
                 android:textSize="18sp" />
 
             <TextView
+                android:id="@+id/tv_today_min_max_temp"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_gravity="end"
-                android:text="15° / 20°"
+                android:text="-° / -°"
                 android:textSize="18sp" />
         </FrameLayout>
 
@@ -184,10 +185,11 @@
                 android:textSize="18sp"/>
 
             <TextView
+                android:id="@+id/tv_tomorrow_min_max_temp"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_gravity="end"
-                android:text="15° / 20°"
+                android:text="-° / -°"
                 android:textSize="18sp" />
         </FrameLayout>
 
@@ -204,50 +206,11 @@
                 android:textSize="18sp" />
 
             <TextView
+                android:id="@+id/tv_third_min_max_temp"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_gravity="end"
-                android:text="15° / 20°"
-                android:textSize="18sp" />
-        </FrameLayout>
-
-        <FrameLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:padding="10dp">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_gravity="start"
-                android:text="Среда"
-                android:textSize="18sp" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_gravity="end"
-                android:text="15° / 20°"
-                android:textSize="18sp" />
-        </FrameLayout>
-
-        <FrameLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:padding="10dp">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_gravity="start"
-                android:text="Четверг"
-                android:textSize="18sp" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_gravity="end"
-                android:text="15° / 20°"
+                android:text="-° / -°"
                 android:textSize="18sp" />
         </FrameLayout>
     </LinearLayout>
