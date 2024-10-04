@@ -1,7 +1,6 @@
 package ru.lonelywh1te.justweather.presentation.fragment
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.Menu
 import android.view.MenuInflater
@@ -9,26 +8,34 @@ import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.MenuProvider
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
-import org.koin.androidx.viewmodel.ext.android.activityViewModel
+import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.lonelywh1te.justweather.R
 import ru.lonelywh1te.justweather.databinding.FragmentWeatherBinding
 import ru.lonelywh1te.justweather.domain.models.WeatherInfo
-import ru.lonelywh1te.justweather.presentation.viewmodel.MainActivityViewModel
-import ru.lonelywh1te.justweather.presentation.viewmodel.UIState
+import ru.lonelywh1te.justweather.presentation.state.UIState
+import ru.lonelywh1te.justweather.presentation.viewmodel.WeatherFragmentViewModel
 
 
 class WeatherFragment : Fragment(), MenuProvider {
     private var _binding: FragmentWeatherBinding? = null
     private val binding get() = _binding!!
-    private val viewModel by activityViewModel<MainActivityViewModel>()
+    private val viewModel by viewModel<WeatherFragmentViewModel>()
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        if (savedInstanceState == null) {
+            viewModel.getCurrentWeatherInfo("Владивосток")
+        }
+    }
+
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         _binding = FragmentWeatherBinding.inflate(inflater, container, false)
         requireActivity().addMenuProvider(this, viewLifecycleOwner)
 
@@ -43,7 +50,6 @@ class WeatherFragment : Fragment(), MenuProvider {
         return binding.root
     }
 
-
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
@@ -52,7 +58,7 @@ class WeatherFragment : Fragment(), MenuProvider {
     private fun changeState(state: UIState<WeatherInfo>) {
         when (state) {
             is UIState.Loading -> {} // TODO: Show loading
-            is UIState.Success -> updateUI(state.weatherInfo)
+            is UIState.Success -> updateUI(state.data)
             is UIState.Error -> {} // TODO: Show error
             is UIState.Init -> {} // TODO: nothing
         }

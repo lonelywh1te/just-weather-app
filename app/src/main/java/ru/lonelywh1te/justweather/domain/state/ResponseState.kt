@@ -1,4 +1,4 @@
-package ru.lonelywh1te.justweather.domain.states
+package ru.lonelywh1te.justweather.domain.state
 
 sealed class ResponseState<T> {
     class Success<T>(val data: T) : ResponseState<T>()

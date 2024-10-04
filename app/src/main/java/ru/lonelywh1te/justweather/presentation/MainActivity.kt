@@ -5,17 +5,13 @@ import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupActionBarWithNavController
 import org.koin.androidx.viewmodel.ext.android.getViewModel
-import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.lonelywh1te.justweather.R
 import ru.lonelywh1te.justweather.databinding.ActivityMainBinding
 import ru.lonelywh1te.justweather.presentation.viewmodel.MainActivityViewModel
-
-// TODO: use DI
 
 class MainActivity: AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding

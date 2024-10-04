@@ -5,7 +5,7 @@ import kotlinx.coroutines.flow.flow
 import ru.lonelywh1te.justweather.data.utils.toWeatherInfo
 import ru.lonelywh1te.justweather.domain.WeatherInfoRepository
 import ru.lonelywh1te.justweather.domain.models.WeatherInfo
-import ru.lonelywh1te.justweather.domain.states.ResponseState
+import ru.lonelywh1te.justweather.domain.state.ResponseState
 
 private const val LOG_TAG = "WeatherRepositoryImpl"
 
