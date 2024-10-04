@@ -3,12 +3,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".presentation.fragment.SearchCityFragment"
+    tools:context=".presentation.fragment.SearchLocationFragment"
     android:padding="20dp">
 
     <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_locations"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:listitem="@layout/item_city"/>
+        tools:listitem="@layout/item_location"/>
 
 </FrameLayout>

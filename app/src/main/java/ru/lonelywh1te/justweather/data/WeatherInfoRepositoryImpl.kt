@@ -3,7 +3,8 @@ package ru.lonelywh1te.justweather.data
 import android.util.Log
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
-import ru.lonelywh1te.justweather.data.utils.toWeatherInfo
+import ru.lonelywh1te.justweather.data.network.WeatherApi
+import ru.lonelywh1te.justweather.data.network.utils.toWeatherInfo
 import ru.lonelywh1te.justweather.domain.WeatherInfoRepository
 import ru.lonelywh1te.justweather.domain.models.WeatherInfo
 import ru.lonelywh1te.justweather.domain.state.ResponseState

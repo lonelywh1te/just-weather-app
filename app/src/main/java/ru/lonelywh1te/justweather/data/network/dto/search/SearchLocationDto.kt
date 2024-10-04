@@ -1,4 +1,4 @@
-package ru.lonelywh1te.justweather.data.dto.search
+package ru.lonelywh1te.justweather.data.network.dto.search
 
 
 import kotlinx.serialization.SerialName

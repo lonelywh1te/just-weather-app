@@ -19,8 +19,8 @@
     </fragment>
     <fragment
         android:id="@+id/searchCityFragment"
-        android:name="ru.lonelywh1te.justweather.presentation.fragment.SearchCityFragment"
-        tools:layout="@layout/fragment_search_city" />
+        android:name="ru.lonelywh1te.justweather.presentation.fragment.SearchLocationFragment"
+        tools:layout="@layout/fragment_search_location" />
     <fragment
         android:id="@+id/settingsFragment"
         android:name="ru.lonelywh1te.justweather.presentation.fragment.SettingsFragment"

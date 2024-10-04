@@ -1,10 +1,13 @@
 package ru.lonelywh1te.justweather.presentation
 
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.widget.addTextChangedListener
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupActionBarWithNavController
@@ -70,12 +73,17 @@ class MainActivity: AppCompatActivity() {
         binding.toolbarTitle.visibility = View.GONE
 
         binding.etSearchField.visibility = View.VISIBLE
-        binding.etSearchField.setOnEditorActionListener { _, actionId, _ ->
-            when(actionId) {
-                EditorInfo.IME_ACTION_SEARCH -> TODO("Not yet implemented")
-                else -> false
+
+        binding.etSearchField.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                viewModel.setLocationQuery(s.toString())
             }
-        }
+
+            override fun afterTextChanged(s: Editable?) {}
+        })
+
         binding.etSearchField.requestFocus()
         showKeyboard()
     }

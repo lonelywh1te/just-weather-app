@@ -1,4 +1,4 @@
-package ru.lonelywh1te.justweather.data.utils
+package ru.lonelywh1te.justweather.data.network.utils
 
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.descriptors.PrimitiveKind

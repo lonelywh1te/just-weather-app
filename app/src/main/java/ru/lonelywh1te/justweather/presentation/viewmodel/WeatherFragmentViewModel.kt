@@ -7,10 +7,10 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import ru.lonelywh1te.justweather.domain.models.WeatherInfo
-import ru.lonelywh1te.justweather.domain.state.ResponseState
 import ru.lonelywh1te.justweather.domain.usecases.GetCurrentWeatherInfoUseCase
 import ru.lonelywh1te.justweather.domain.usecases.GetThreeDaysForecastWeatherUseCase
 import ru.lonelywh1te.justweather.presentation.state.UIState
+import ru.lonelywh1te.justweather.presentation.state.toUIState
 
 // TODO: delete getCurrentWeatherInfoUseCase?
 class WeatherFragmentViewModel(
@@ -23,18 +23,7 @@ class WeatherFragmentViewModel(
     fun getForecastWeatherInfo(locationQuery: String) {
         viewModelScope.launch {
             getThreeDaysForecastWeatherUseCase.execute(locationQuery).collectLatest { state ->
-                when(state) {
-                    is ResponseState.Success<WeatherInfo> -> {
-                        _currentWeatherState.value = UIState.Success(state.data)
-                    }
-                    is ResponseState.Error -> {
-                        _currentWeatherState.value = UIState.Error(state.errorCode, state.exception)
-                        println(state.exception)
-                    }
-                    is ResponseState.InProgress -> {
-                        _currentWeatherState.value = UIState.Loading
-                    }
-                }
+                _currentWeatherState.value = state.toUIState()
             }
         }
     }

@@ -1,26 +1,28 @@
-package ru.lonelywh1te.justweather.data.utils
+package ru.lonelywh1te.justweather.data.network.utils
 
-import ru.lonelywh1te.justweather.data.dto.weather.ConditionDto
-import ru.lonelywh1te.justweather.data.dto.weather.CurrentWeatherDto
-import ru.lonelywh1te.justweather.data.dto.weather.DayDto
-import ru.lonelywh1te.justweather.data.dto.weather.ForecastDayDto
-import ru.lonelywh1te.justweather.data.dto.weather.ForecastDto
-import ru.lonelywh1te.justweather.data.dto.weather.HourDto
-import ru.lonelywh1te.justweather.data.dto.weather.WeatherLocationDto
-import ru.lonelywh1te.justweather.data.dto.weather.WeatherResponse
+import ru.lonelywh1te.justweather.data.network.dto.search.SearchLocationDto
+import ru.lonelywh1te.justweather.data.network.dto.weather.ConditionDto
+import ru.lonelywh1te.justweather.data.network.dto.weather.CurrentWeatherDto
+import ru.lonelywh1te.justweather.data.network.dto.weather.DayDto
+import ru.lonelywh1te.justweather.data.network.dto.weather.ForecastDayDto
+import ru.lonelywh1te.justweather.data.network.dto.weather.ForecastDto
+import ru.lonelywh1te.justweather.data.network.dto.weather.HourDto
+import ru.lonelywh1te.justweather.data.network.dto.weather.WeatherLocationDto
+import ru.lonelywh1te.justweather.data.network.dto.weather.WeatherResponse
 import ru.lonelywh1te.justweather.domain.models.Condition
 import ru.lonelywh1te.justweather.domain.models.CurrentWeather
 import ru.lonelywh1te.justweather.domain.models.Day
 import ru.lonelywh1te.justweather.domain.models.Forecast
 import ru.lonelywh1te.justweather.domain.models.ForecastDay
 import ru.lonelywh1te.justweather.domain.models.Hour
+import ru.lonelywh1te.justweather.domain.models.SearchLocation
 import ru.lonelywh1te.justweather.domain.models.WeatherInfo
 import ru.lonelywh1te.justweather.domain.models.WeatherLocation
 import kotlin.math.roundToInt
 
 fun WeatherResponse.toWeatherInfo(): WeatherInfo {
     return WeatherInfo(
-        location = this.location.toWeatherLocation(),
+        // location = this.location.toWeatherLocation(),
         current = this.currentWeather.toCurrentWeather(),
         forecast = this.forecast?.toForecast(),
     )
@@ -96,5 +98,17 @@ fun ConditionDto.toCondition(): Condition {
     return Condition(
         text = this.text,
         code = this.code,
+    )
+}
+
+fun SearchLocationDto.toSearchLocation(): SearchLocation {
+    return SearchLocation(
+        id = this.id,
+        name = this.name,
+        region = this.region,
+        country = this.country,
+        lat = this.lat,
+        lon = this.lon,
+        url = this.url
     )
 }

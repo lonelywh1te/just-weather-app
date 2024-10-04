@@ -1,4 +1,4 @@
-package ru.lonelywh1te.justweather.data
+package ru.lonelywh1te.justweather.data.network
 
 import kotlinx.serialization.json.Json
 import okhttp3.MediaType
@@ -9,8 +9,8 @@ import retrofit2.converter.kotlinx.serialization.asConverterFactory
 import retrofit2.create
 import retrofit2.http.GET
 import retrofit2.http.Query
-import ru.lonelywh1te.justweather.data.dto.search.SearchResponse
-import ru.lonelywh1te.justweather.data.dto.weather.WeatherResponse
+import ru.lonelywh1te.justweather.data.network.dto.search.SearchLocationDto
+import ru.lonelywh1te.justweather.data.network.dto.weather.WeatherResponse
 
 interface WeatherApi {
 
@@ -24,7 +24,7 @@ interface WeatherApi {
     ): Response<WeatherResponse>
 
     @GET("search.json")
-    suspend fun searchCity(@Query("q") locationQuery: String): Response<SearchResponse>
+    suspend fun searchLocation(@Query("q") locationQuery: String): Response<List<SearchLocationDto>>
 
 }
 

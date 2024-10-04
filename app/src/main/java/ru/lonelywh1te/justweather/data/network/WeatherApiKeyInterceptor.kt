@@ -1,4 +1,4 @@
-package ru.lonelywh1te.justweather.data
+package ru.lonelywh1te.justweather.data.network
 
 import okhttp3.Interceptor
 import okhttp3.Response
