@@ -58,7 +58,7 @@ class SearchLocationFragment : Fragment(), MenuProvider {
         viewLifecycleOwner.lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.searchState.collectLatest { state ->
-                    changeState(state)
+                    updateUI(state)
                 }
             }
         }
@@ -66,11 +66,19 @@ class SearchLocationFragment : Fragment(), MenuProvider {
         return binding.root
     }
 
-    private fun changeState(state: UIState<List<SearchLocation>>) {
+    private fun updateUI(state: UIState<List<SearchLocation>>) {
         when (state) {
-            is UIState.Loading -> {}// TODO: show progress
-            is UIState.Success -> rvAdapter.submit(state.data)
-            is UIState.Error -> showError(state)
+            is UIState.Loading -> {
+                binding.pbLoading.visibility = View.VISIBLE
+            }
+            is UIState.Success -> {
+                binding.pbLoading.visibility = View.GONE
+                rvAdapter.submit(state.data)
+            }
+            is UIState.Error -> {
+                binding.pbLoading.visibility = View.GONE
+                showError(state)
+            }
             else -> return
         }
     }

@@ -48,7 +48,7 @@ class WeatherFragment : Fragment(), MenuProvider {
         viewLifecycleOwner.lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.currentWeatherState.collectLatest { state ->
-                    changeState(state)
+                    updateUI(state)
                 }
             }
         }
@@ -61,36 +61,44 @@ class WeatherFragment : Fragment(), MenuProvider {
         _binding = null
     }
 
-    private fun changeState(state: UIState<WeatherInfo>) {
-        when (state) {
-            is UIState.Loading -> {} // TODO: Show loading
-            is UIState.Success -> updateUI(state.data)
-            is UIState.Error -> showError(state)
-            else -> return // TODO: nothing
-        }
-    }
-
     // TODO: hardcode!!
-    private fun updateUI(weatherInfo: WeatherInfo) {
-        binding.tvLastUpdatedValue.text = UiUtils.dateFormat(weatherInfo.current.lastUpdated, "dd.MM.yyyy HH:mm")
-        binding.tvCondition.text = weatherInfo.current.condition.text
-        binding.tvCurrentTemp.text = weatherInfo.current.tempC.toString()
-        binding.tvWindSpeedValue.text = weatherInfo.current.windKph.toString()
-        binding.tvUvValue.text = weatherInfo.current.uv.toString()
-
-        weatherInfo.forecast?.let { forecast ->
-            binding.tvMinTemp.text = UiUtils.toTempPattern(forecast.forecastDays[0].day.minTempC)
-            binding.tvMaxTemp.text = UiUtils.toTempPattern(forecast.forecastDays[0].day.maxTempC)
-
-            val forecastDaysValuesList = listOf(
-                binding.tvTodayMinMaxTemp,
-                binding.tvTomorrowMinMaxTemp,
-                binding.tvThirdMinMaxTemp,
-            )
-
-            forecastDaysValuesList.forEachIndexed { index, textView ->
-                textView.text = UiUtils.toMinMaxPattern(forecast.forecastDays[index].day.minTempC, forecast.forecastDays[index].day.maxTempC)
+    private fun updateUI(state: UIState<WeatherInfo>) {
+        when (state) {
+            is UIState.Loading -> {
+                binding.pbLoading.visibility = View.VISIBLE
             }
+            is UIState.Success -> {
+                binding.pbLoading.visibility = View.GONE
+
+                val weatherInfo = state.data
+
+                binding.tvLastUpdatedValue.text = UiUtils.dateFormat(weatherInfo.current.lastUpdated, "dd.MM.yyyy HH:mm")
+                binding.tvCondition.text = weatherInfo.current.condition.text
+                binding.tvCurrentTemp.text = weatherInfo.current.tempC.toString()
+                binding.tvWindSpeedValue.text = weatherInfo.current.windKph.toString()
+                binding.tvUvValue.text = weatherInfo.current.uv.toString()
+
+                weatherInfo.forecast?.let { forecast ->
+                    binding.tvMinTemp.text = UiUtils.toTempPattern(forecast.forecastDays[0].day.minTempC)
+                    binding.tvMaxTemp.text = UiUtils.toTempPattern(forecast.forecastDays[0].day.maxTempC)
+
+                    val forecastDaysValuesList = listOf(
+                        binding.tvTodayMinMaxTemp,
+                        binding.tvTomorrowMinMaxTemp,
+                        binding.tvThirdMinMaxTemp,
+                    )
+
+                    forecastDaysValuesList.forEachIndexed { index, textView ->
+                        textView.text = UiUtils.toMinMaxPattern(forecast.forecastDays[index].day.minTempC, forecast.forecastDays[index].day.maxTempC)
+                    }
+                }
+            }
+
+            is UIState.Error -> {
+                binding.pbLoading.visibility = View.GONE
+                showError(state)
+            }
+            else -> return
         }
     }
 

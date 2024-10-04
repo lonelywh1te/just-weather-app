@@ -27,7 +27,6 @@ class MainActivity: AppCompatActivity() {
     private lateinit var navController: NavController
     private lateinit var viewModel: MainActivityViewModel
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
@@ -41,13 +40,15 @@ class MainActivity: AppCompatActivity() {
         setSupportActionBar(binding.toolbar)
         setupActionBarWithNavController(navController)
 
-        // TODO: fix toolbar title hardcode
         navController.addOnDestinationChangedListener { _, destination, _ ->
             binding.toolbar.title = null
 
             when (destination.id) {
                 R.id.weatherFragment -> {
-                    showToolbarTitle()
+                    if (binding.etSearchField.visibility == View.VISIBLE) hideSearchField()
+                    hideKeyboard()
+
+                    showToolbarTitle(viewModel.userLocation.value?.name ?: "Выберите город")
                     showLocationButton()
 
                     binding.toolbarTitle.setOnClickListener {
@@ -56,11 +57,13 @@ class MainActivity: AppCompatActivity() {
                 }
 
                 R.id.searchCityFragment -> {
+                    hideToolbarTitle()
                     showSearchField()
+                    showKeyboard()
                 }
 
                 R.id.settingsFragment -> {
-                    binding.toolbarTitle.text = destination.label
+                    showToolbarTitle(destination.label.toString())
                     binding.toolbarTitle.setOnClickListener(null)
                 }
             }
@@ -74,29 +77,28 @@ class MainActivity: AppCompatActivity() {
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.userLocation.collectLatest { location ->
-                    if (location != null) {
-                        binding.toolbarTitle.text = location.name
-                    } else {
-                        binding.toolbarTitle.text = "Выберите город"
-                    }
+                    showToolbarTitle(location?.name.toString())
                 }
             }
         }
     }
 
-    private fun showToolbarTitle() {
-        binding.toolbarTitle.text = viewModel.userLocation.value?.name ?: "Выбрать город"
-        binding.toolbarTitle.visibility = View.VISIBLE
-        binding.etSearchField.visibility = View.GONE
+    private fun showToolbarTitle(title: String) {
+        binding.toolbarTitle.text = title
+        if (binding.toolbarTitle.visibility == View.GONE) {
+            binding.toolbarTitle.visibility = View.VISIBLE
+        }
+    }
 
-        hideKeyboard()
+    private fun hideToolbarTitle() {
+        if (binding.toolbarTitle.visibility == View.VISIBLE) {
+            binding.toolbarTitle.visibility = View.GONE
+        }
     }
 
     private fun showSearchField() {
-        binding.toolbarTitle.visibility = View.GONE
-
         binding.etSearchField.visibility = View.VISIBLE
-
+        binding.etSearchField.setHint(binding.toolbarTitle.text)
         binding.etSearchField.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
 
@@ -108,7 +110,13 @@ class MainActivity: AppCompatActivity() {
         })
 
         binding.etSearchField.requestFocus()
-        showKeyboard()
+    }
+
+    private fun hideSearchField() {
+        if (binding.etSearchField.visibility == View.VISIBLE) {
+            binding.etSearchField.setText("")
+            binding.etSearchField.visibility = View.GONE
+        }
     }
 
     private fun showKeyboard() {
