@@ -16,24 +16,28 @@ import androidx.navigation.fragment.findNavController
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
+import org.koin.androidx.viewmodel.ext.android.activityViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.lonelywh1te.justweather.R
 import ru.lonelywh1te.justweather.databinding.FragmentWeatherBinding
 import ru.lonelywh1te.justweather.domain.models.WeatherInfo
 import ru.lonelywh1te.justweather.presentation.state.UIState
 import ru.lonelywh1te.justweather.presentation.utils.UiUtils
+import ru.lonelywh1te.justweather.presentation.viewmodel.MainActivityViewModel
 import ru.lonelywh1te.justweather.presentation.viewmodel.WeatherFragmentViewModel
-
 
 class WeatherFragment : Fragment(), MenuProvider {
     private var _binding: FragmentWeatherBinding? = null
     private val binding get() = _binding!!
+
+    private val activityViewModel by activityViewModel<MainActivityViewModel>()
     private val viewModel by viewModel<WeatherFragmentViewModel>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         if (savedInstanceState == null) {
-            viewModel.getForecastWeatherInfo("Владивосток")
+            val location = activityViewModel.userLocation.value
+            location?.let { viewModel.getForecastWeatherInfo(location.name) }
         }
     }
 

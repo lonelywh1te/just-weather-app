@@ -8,9 +8,14 @@ import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.widget.addTextChangedListener
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupActionBarWithNavController
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.getViewModel
 import ru.lonelywh1te.justweather.R
 import ru.lonelywh1te.justweather.databinding.ActivityMainBinding
@@ -21,6 +26,7 @@ class MainActivity: AppCompatActivity() {
     private lateinit var inputMethodManager: InputMethodManager
     private lateinit var navController: NavController
     private lateinit var viewModel: MainActivityViewModel
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -35,8 +41,8 @@ class MainActivity: AppCompatActivity() {
         setSupportActionBar(binding.toolbar)
         setupActionBarWithNavController(navController)
 
+        // TODO: fix toolbar title hardcode
         navController.addOnDestinationChangedListener { _, destination, _ ->
-            binding.toolbarTitle.text = destination.label
             binding.toolbar.title = null
 
             when (destination.id) {
@@ -53,16 +59,33 @@ class MainActivity: AppCompatActivity() {
                     showSearchField()
                 }
 
-                else -> {
+                R.id.settingsFragment -> {
+                    binding.toolbarTitle.text = destination.label
                     binding.toolbarTitle.setOnClickListener(null)
                 }
             }
         }
 
+        observeUserLocation()
         setContentView(binding.root)
     }
 
+    private fun observeUserLocation() {
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.userLocation.collectLatest { location ->
+                    if (location != null) {
+                        binding.toolbarTitle.text = location.name
+                    } else {
+                        binding.toolbarTitle.text = "Выберите город"
+                    }
+                }
+            }
+        }
+    }
+
     private fun showToolbarTitle() {
+        binding.toolbarTitle.text = viewModel.userLocation.value?.name ?: "Выбрать город"
         binding.toolbarTitle.visibility = View.VISIBLE
         binding.etSearchField.visibility = View.GONE
 

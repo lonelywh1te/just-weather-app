@@ -9,7 +9,9 @@ import ru.lonelywh1te.justweather.presentation.viewmodel.WeatherFragmentViewMode
 val appModule = module {
 
     viewModel<MainActivityViewModel> {
-        MainActivityViewModel()
+        MainActivityViewModel(
+            getLatestSearchLocationUseCase = get()
+        )
     }
 
     viewModel<WeatherFragmentViewModel> {
@@ -21,7 +23,8 @@ val appModule = module {
 
     viewModel<SearchLocationViewModel> {
         SearchLocationViewModel(
-            searchLocationUseCase = get()
+            searchLocationUseCase = get(),
+            selectLocationUseCase = get(),
         )
     }
 

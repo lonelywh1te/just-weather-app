@@ -1,4 +1,4 @@
-package ru.lonelywh1te.justweather.data.network.utils
+package ru.lonelywh1te.justweather.data
 
 import ru.lonelywh1te.justweather.data.network.dto.search.SearchLocationDto
 import ru.lonelywh1te.justweather.data.network.dto.weather.ConditionDto
@@ -103,6 +103,18 @@ fun ConditionDto.toCondition(): Condition {
 
 fun SearchLocationDto.toSearchLocation(): SearchLocation {
     return SearchLocation(
+        id = this.id,
+        name = this.name,
+        region = this.region,
+        country = this.country,
+        lat = this.lat,
+        lon = this.lon,
+        url = this.url
+    )
+}
+
+fun SearchLocation.toSearchLocationDto(): SearchLocationDto {
+    return SearchLocationDto(
         id = this.id,
         name = this.name,
         region = this.region,

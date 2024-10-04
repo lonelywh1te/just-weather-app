@@ -6,7 +6,9 @@ import androidx.recyclerview.widget.RecyclerView
 import ru.lonelywh1te.justweather.databinding.ItemLocationBinding
 import ru.lonelywh1te.justweather.domain.models.SearchLocation
 
-class SearchLocationAdapter: RecyclerView.Adapter<SearchLocationViewHolder>() {
+class SearchLocationAdapter(
+    private val onLocationClick: (SearchLocation) -> Unit
+): RecyclerView.Adapter<SearchLocationViewHolder>() {
     private var list = listOf<SearchLocation>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SearchLocationViewHolder {
@@ -18,6 +20,7 @@ class SearchLocationAdapter: RecyclerView.Adapter<SearchLocationViewHolder>() {
 
     override fun onBindViewHolder(holder: SearchLocationViewHolder, position: Int) {
         val location = list[position]
+        holder.itemView.setOnClickListener { onLocationClick(location) }
         holder.bind(location)
     }
 

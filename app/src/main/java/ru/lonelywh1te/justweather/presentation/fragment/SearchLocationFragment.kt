@@ -42,7 +42,14 @@ class SearchLocationFragment : Fragment(), MenuProvider {
 
         _binding = FragmentSearchLocationBinding.inflate(inflater, container, false)
 
-        rvAdapter = SearchLocationAdapter()
+        rvAdapter = SearchLocationAdapter(onLocationClick = { location ->
+            lifecycleScope.launch {
+                viewModel.select(location)
+                activityViewModel.getLastUserLocation()
+                findNavController().popBackStack()
+            }
+        })
+
         recycler = binding.rvLocations.apply {
             layoutManager = LinearLayoutManager(requireContext())
             this.adapter = rvAdapter
