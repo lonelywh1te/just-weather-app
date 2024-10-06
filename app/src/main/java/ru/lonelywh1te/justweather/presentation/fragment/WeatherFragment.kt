@@ -1,6 +1,7 @@
 package ru.lonelywh1te.justweather.presentation.fragment
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.Menu
 import android.view.MenuInflater
@@ -26,6 +27,8 @@ import ru.lonelywh1te.justweather.presentation.utils.UiUtils
 import ru.lonelywh1te.justweather.presentation.viewmodel.MainActivityViewModel
 import ru.lonelywh1te.justweather.presentation.viewmodel.WeatherFragmentViewModel
 
+private const val LOG_TAG = "WeatherFragment"
+
 class WeatherFragment : Fragment(), MenuProvider {
     private var _binding: FragmentWeatherBinding? = null
     private val binding get() = _binding!!
@@ -33,32 +36,40 @@ class WeatherFragment : Fragment(), MenuProvider {
     private val activityViewModel by activityViewModel<MainActivityViewModel>()
     private val viewModel by viewModel<WeatherFragmentViewModel>()
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        if (savedInstanceState == null) {
-            val location = activityViewModel.userLocation.value
-            location?.let { viewModel.getForecastWeatherInfo(location.name) }
-        }
-    }
-
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         _binding = FragmentWeatherBinding.inflate(inflater, container, false)
         requireActivity().addMenuProvider(this, viewLifecycleOwner)
 
-        viewLifecycleOwner.lifecycleScope.launch {
-            repeatOnLifecycle(Lifecycle.State.STARTED) {
-                viewModel.currentWeatherState.collectLatest { state ->
-                    updateUI(state)
-                }
-            }
-        }
-
         return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        initFlowCollectors()
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+
+    private fun initFlowCollectors() {
+        viewLifecycleOwner.lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                launch {
+                    viewModel.currentWeatherState.collect { state ->
+                        updateUI(state)
+                    }
+                }
+
+                launch {
+                    activityViewModel.userLocation.collectLatest { location ->
+                        Log.d(LOG_TAG, "User location: $location")
+                        location?.let { viewModel.getForecastWeatherInfo(location.name) }
+                    }
+                }
+            }
+        }
     }
 
     // TODO: hardcode!!

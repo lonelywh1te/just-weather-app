@@ -51,8 +51,6 @@ class WeatherInfoRepositoryImpl(private val weatherApi: WeatherApi): WeatherInfo
 
                 if (weatherInfo != null) {
                     emit(ResponseState.Success(weatherInfo))
-                    Log.d(LOG_TAG, days.toString())
-                    Log.d(LOG_TAG, weatherInfo.forecast?.forecastDays?.size.toString())
                 } else {
                     emit(ResponseState.Error(null, Exception("Response body is null.")))
                     Log.e(LOG_TAG, "Response body is null.")
