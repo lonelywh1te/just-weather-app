@@ -22,9 +22,92 @@ import kotlin.math.roundToInt
 
 fun WeatherResponse.toWeatherInfo(): WeatherInfo {
     return WeatherInfo(
-        // location = this.location.toWeatherLocation(),
+        location = this.location.toWeatherLocation(),
         current = this.currentWeather.toCurrentWeather(),
         forecast = this.forecast?.toForecast(),
+    )
+}
+
+fun WeatherInfo.toWeatherResponse(): WeatherResponse {
+    return WeatherResponse(
+        location = this.location.toWeatherLocationDto(),
+        currentWeather = this.current.toCurrentWeatherDto(),
+        forecast = this.forecast?.toForecastDto(),
+    )
+}
+
+fun WeatherLocation.toWeatherLocationDto(): WeatherLocationDto {
+    return WeatherLocationDto(
+        name = this.name,
+        region = this.region,
+        country = this.country,
+        lat = this.lat,
+        lon = this.lon,
+        timezoneId = this.timezoneId,
+        localTime = this.localTime,
+        localTimeString = localTime.toString(),
+    )
+}
+
+
+fun CurrentWeather.toCurrentWeatherDto(): CurrentWeatherDto {
+    return CurrentWeatherDto(
+        lastUpdated = this.lastUpdated,
+        tempC = this.tempC.toDouble(),
+        tempF = this.tempF.toDouble(),
+        condition = this.condition.toConditionDto(),
+        windKph = this.windKph,
+        windMph = this.windMph,
+        feelsLikeC = this.feelsLikeC.toDouble(),
+        feelsLikeF = this.feelsLikeF.toDouble(),
+        uv = this.uv,
+    )
+}
+
+fun Forecast.toForecastDto(): ForecastDto {
+    return ForecastDto(
+        forecastDays = this.forecastDays.map { it.toForecastDayDto() }
+    )
+}
+
+fun ForecastDay.toForecastDayDto(): ForecastDayDto {
+    return ForecastDayDto(
+        date = this.date,
+        day = this.day.toDayDto(),
+        hour = this.hour.map { it.toHourDto() }
+    )
+}
+
+fun Day.toDayDto(): DayDto {
+    return DayDto(
+        maxTempC = this.maxTempC.toDouble(),
+        maxTempF = this.maxTempF.toDouble(),
+        minTempC = this.minTempC.toDouble(),
+        minTempF = this.minTempF.toDouble(),
+        condition = this.condition.toConditionDto(),
+        uv = this.uv
+    )
+}
+
+fun Hour.toHourDto(): HourDto {
+    return HourDto(
+        time = this.time,
+        tempC = this.tempC.toDouble(),
+        tempF = this.tempF.toDouble(),
+        condition = this.condition.toConditionDto(),
+        windKph = this.windKph,
+        windMph = this.windMph,
+        feelsLikeC = this.feelsLikeC.toDouble(),
+        feelsLikeF = this.feelsLikeF.toDouble(),
+        uv = this.uv,
+        isDay = this.isDay
+    )
+}
+
+fun Condition.toConditionDto(): ConditionDto {
+    return ConditionDto(
+        text = this.text,
+        code = this.code,
     )
 }
 

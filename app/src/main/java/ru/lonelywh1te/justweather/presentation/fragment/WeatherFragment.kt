@@ -1,7 +1,6 @@
 package ru.lonelywh1te.justweather.presentation.fragment
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.Menu
 import android.view.MenuInflater
@@ -39,7 +38,6 @@ class WeatherFragment : Fragment(), MenuProvider {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         _binding = FragmentWeatherBinding.inflate(inflater, container, false)
         requireActivity().addMenuProvider(this, viewLifecycleOwner)
-
         return binding.root
     }
 
@@ -64,7 +62,6 @@ class WeatherFragment : Fragment(), MenuProvider {
 
                 launch {
                     activityViewModel.userLocation.collectLatest { location ->
-                        Log.d(LOG_TAG, "User location: $location")
                         location?.let { viewModel.getForecastWeatherInfo(location.name) }
                     }
                 }
@@ -72,49 +69,55 @@ class WeatherFragment : Fragment(), MenuProvider {
         }
     }
 
-    // TODO: hardcode!!
     private fun updateUI(state: UIState<WeatherInfo>) {
         when (state) {
             is UIState.Loading -> {
-                binding.pbLoading.visibility = View.VISIBLE
+                updateProgressBarState(true)
+                state.data?.let { updateWeatherInfo(it) }
             }
             is UIState.Success -> {
-                binding.pbLoading.visibility = View.GONE
-
-                val weatherInfo = state.data
-
-                binding.tvLastUpdatedValue.text = UiUtils.dateFormat(weatherInfo.current.lastUpdated, "dd.MM.yyyy HH:mm")
-                binding.tvCondition.text = weatherInfo.current.condition.text
-                binding.tvCurrentTemp.text = weatherInfo.current.tempC.toString()
-                binding.tvWindSpeedValue.text = weatherInfo.current.windKph.toString()
-                binding.tvUvValue.text = weatherInfo.current.uv.toString()
-
-                weatherInfo.forecast?.let { forecast ->
-                    binding.tvMinTemp.text = UiUtils.toTempPattern(forecast.forecastDays[0].day.minTempC)
-                    binding.tvMaxTemp.text = UiUtils.toTempPattern(forecast.forecastDays[0].day.maxTempC)
-
-                    val forecastDaysValuesList = listOf(
-                        binding.tvTodayMinMaxTemp,
-                        binding.tvTomorrowMinMaxTemp,
-                        binding.tvThirdMinMaxTemp,
-                    )
-
-                    forecastDaysValuesList.forEachIndexed { index, textView ->
-                        textView.text = UiUtils.toMinMaxPattern(forecast.forecastDays[index].day.minTempC, forecast.forecastDays[index].day.maxTempC)
-                    }
-                }
+                updateProgressBarState(false)
+                updateWeatherInfo(state.data)
             }
 
             is UIState.Error -> {
-                binding.pbLoading.visibility = View.GONE
+                updateProgressBarState(false)
                 showError(state)
             }
             else -> return
         }
     }
 
+    private fun updateWeatherInfo(weatherInfo: WeatherInfo) {
+        binding.tvLastUpdatedValue.text = UiUtils.dateFormat(weatherInfo.current.lastUpdated, "dd.MM.yyyy HH:mm")
+        binding.tvCondition.text = weatherInfo.current.condition.text
+        binding.tvCurrentTemp.text = weatherInfo.current.tempC.toString()
+        binding.tvWindSpeedValue.text = weatherInfo.current.windKph.toString()
+        binding.tvUvValue.text = weatherInfo.current.uv.toString()
+        binding.tvThirdDayName.text = UiUtils.getThirdDayName()
+
+        weatherInfo.forecast?.let { forecast ->
+            binding.tvMinTemp.text = UiUtils.toTempPattern(forecast.forecastDays[0].day.minTempC)
+            binding.tvMaxTemp.text = UiUtils.toTempPattern(forecast.forecastDays[0].day.maxTempC)
+
+            val forecastDaysValuesList = listOf(
+                binding.tvTodayMinMaxTemp,
+                binding.tvTomorrowMinMaxTemp,
+                binding.tvThirdMinMaxTemp,
+            )
+
+            forecastDaysValuesList.forEachIndexed { index, textView ->
+                textView.text = UiUtils.toMinMaxPattern(forecast.forecastDays[index].day.minTempC, forecast.forecastDays[index].day.maxTempC)
+            }
+        }
+    }
+
+    private fun updateProgressBarState(isLoading: Boolean) {
+        binding.pbLoading.visibility = if (isLoading) View.VISIBLE else View.GONE
+    }
+
     // TODO: show by view?
-    private fun showError(state: UIState.Error) {
+    private fun showError(state: UIState.Error<*>) {
         Snackbar
             .make(binding.root, state.exception?.message.toString(), Snackbar.LENGTH_LONG)
             .show()

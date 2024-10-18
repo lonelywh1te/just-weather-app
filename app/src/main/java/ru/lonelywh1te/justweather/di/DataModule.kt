@@ -22,7 +22,10 @@ val dataModule = module {
     }
 
     single<WeatherInfoRepository>{
-        WeatherInfoRepositoryImpl(weatherApi = get())
+        WeatherInfoRepositoryImpl(
+            weatherApi = get(),
+            prefs = get()
+        )
     }
 
     single<SearchLocationRepository> {

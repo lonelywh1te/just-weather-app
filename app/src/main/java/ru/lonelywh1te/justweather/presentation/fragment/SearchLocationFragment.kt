@@ -84,7 +84,7 @@ class SearchLocationFragment : Fragment(), MenuProvider {
     }
 
     // TODO: show by view?
-    private fun showError(state: UIState.Error) {
+    private fun showError(state: UIState.Error<*>) {
         Snackbar
             .make(binding.root, state.exception?.message.toString(), Snackbar.LENGTH_LONG)
             .show()

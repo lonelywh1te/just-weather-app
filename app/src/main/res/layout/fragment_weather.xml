@@ -169,7 +169,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_gravity="start"
-                android:text="Сегодня"
+                android:text="cегодня"
                 android:textSize="18sp" />
 
             <TextView
@@ -190,7 +190,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_gravity="start"
-                android:text="Завтра"
+                android:text="завтра"
                 android:textSize="18sp"/>
 
             <TextView
@@ -208,10 +208,11 @@
             android:padding="10dp">
 
             <TextView
+                android:id="@+id/tv_third_day_name"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_gravity="start"
-                android:text="Вторник"
+                tools:text="послезавтра"
                 android:textSize="18sp" />
 
             <TextView

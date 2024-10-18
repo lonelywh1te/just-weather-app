@@ -17,6 +17,6 @@ internal object DateSerializer: KSerializer<Date> {
     }
 
     override fun serialize(encoder: Encoder, value: Date) {
-        return encoder.encodeString(value.toString())
+        return encoder.encodeInt((value.time / 1000).toInt())
     }
 }
