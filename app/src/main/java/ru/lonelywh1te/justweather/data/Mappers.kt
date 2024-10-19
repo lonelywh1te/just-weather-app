@@ -15,14 +15,14 @@ import ru.lonelywh1te.justweather.domain.models.Day
 import ru.lonelywh1te.justweather.domain.models.Forecast
 import ru.lonelywh1te.justweather.domain.models.ForecastDay
 import ru.lonelywh1te.justweather.domain.models.Hour
-import ru.lonelywh1te.justweather.domain.models.SearchLocation
+import ru.lonelywh1te.justweather.domain.models.Location
 import ru.lonelywh1te.justweather.domain.models.WeatherInfo
-import ru.lonelywh1te.justweather.domain.models.WeatherLocation
+import java.util.Date
 import kotlin.math.roundToInt
 
 fun WeatherResponse.toWeatherInfo(): WeatherInfo {
     return WeatherInfo(
-        location = this.location.toWeatherLocation(),
+        location = this.location.toLocation(),
         current = this.currentWeather.toCurrentWeather(),
         forecast = this.forecast?.toForecast(),
     )
@@ -36,16 +36,16 @@ fun WeatherInfo.toWeatherResponse(): WeatherResponse {
     )
 }
 
-fun WeatherLocation.toWeatherLocationDto(): WeatherLocationDto {
+fun Location.toWeatherLocationDto(): WeatherLocationDto {
     return WeatherLocationDto(
         name = this.name,
         region = this.region,
         country = this.country,
         lat = this.lat,
         lon = this.lon,
-        timezoneId = this.timezoneId,
-        localTime = this.localTime,
-        localTimeString = localTime.toString(),
+        timezoneId = "",
+        localTime = Date(),
+        localTimeString = Date().toString(),
     )
 }
 
@@ -151,15 +151,13 @@ fun HourDto.toHour(): Hour {
     )
 }
 
-fun WeatherLocationDto.toWeatherLocation(): WeatherLocation {
-    return WeatherLocation(
+fun WeatherLocationDto.toLocation(): Location {
+    return Location(
         name = this.name,
         region = this.region,
         country = this.country,
         lat = this.lat,
         lon = this.lon,
-        timezoneId = this.timezoneId,
-        localTime = this.localTime,
     )
 }
 
@@ -184,26 +182,24 @@ fun ConditionDto.toCondition(): Condition {
     )
 }
 
-fun SearchLocationDto.toSearchLocation(): SearchLocation {
-    return SearchLocation(
-        id = this.id,
+fun SearchLocationDto.toLocation(): Location {
+    return Location(
         name = this.name,
         region = this.region,
         country = this.country,
         lat = this.lat,
         lon = this.lon,
-        url = this.url
     )
 }
 
-fun SearchLocation.toSearchLocationDto(): SearchLocationDto {
+fun Location.toSearchLocationDto(): SearchLocationDto {
     return SearchLocationDto(
-        id = this.id,
+        id = 0,
         name = this.name,
         region = this.region,
         country = this.country,
         lat = this.lat,
         lon = this.lon,
-        url = this.url
+        url = ""
     )
 }

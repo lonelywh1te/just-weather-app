@@ -22,7 +22,7 @@ import org.koin.androidx.viewmodel.ext.android.activityViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.lonelywh1te.justweather.R
 import ru.lonelywh1te.justweather.databinding.FragmentSearchLocationBinding
-import ru.lonelywh1te.justweather.domain.models.SearchLocation
+import ru.lonelywh1te.justweather.domain.models.Location
 import ru.lonelywh1te.justweather.presentation.adapter.SearchLocationAdapter
 import ru.lonelywh1te.justweather.presentation.state.UIState
 import ru.lonelywh1te.justweather.presentation.viewmodel.MainActivityViewModel
@@ -66,7 +66,7 @@ class SearchLocationFragment : Fragment(), MenuProvider {
         return binding.root
     }
 
-    private fun updateUI(state: UIState<List<SearchLocation>>) {
+    private fun updateUI(state: UIState<List<Location>>) {
         when (state) {
             is UIState.Loading -> {
                 binding.pbLoading.visibility = View.VISIBLE

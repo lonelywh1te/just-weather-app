@@ -1,14 +1,9 @@
 package ru.lonelywh1te.justweather.domain.models
 
-import java.util.Date
-
-// TODO: delete?
-data class WeatherLocation(
+data class Location (
     val name: String,
     val region: String,
     val country: String,
     val lat: Double,
     val lon: Double,
-    val timezoneId: String,
-    val localTime: Date,
 )

@@ -10,7 +10,7 @@ import ru.lonelywh1te.justweather.data.network.WeatherApi
 import ru.lonelywh1te.justweather.data.network.dto.search.SearchLocationDto
 import ru.lonelywh1te.justweather.data.prefs.WeatherPrefs
 import ru.lonelywh1te.justweather.domain.SearchLocationRepository
-import ru.lonelywh1te.justweather.domain.models.SearchLocation
+import ru.lonelywh1te.justweather.domain.models.Location
 import ru.lonelywh1te.justweather.domain.state.ResponseState
 
 private const val LOG_TAG = "SearchLocationRepositoryImpl"
@@ -19,14 +19,15 @@ class SearchLocationRepositoryImpl(
     val weatherApi: WeatherApi,
     val prefs: SharedPreferences,
     ): SearchLocationRepository {
-    override fun searchLocation(locationQuery: String): Flow<ResponseState<List<SearchLocation>>> = flow {
+
+    override fun searchLocation(locationQuery: String): Flow<ResponseState<List<Location>>> = flow {
         emit(ResponseState.InProgress())
 
         try {
             val response = weatherApi.searchLocation(locationQuery)
 
             if (response.isSuccessful) {
-                val locations = response.body()?.map { it.toSearchLocation() }
+                val locations = response.body()?.map { it.toLocation() }
 
                 if (locations != null) {
                     emit(ResponseState.Success(locations))
@@ -44,20 +45,19 @@ class SearchLocationRepositoryImpl(
         }
     }
 
-    // TODO: States
-    override fun saveLocation(searchLocation: SearchLocation) {
-        val location = Json.encodeToString(serializer(), searchLocation.toSearchLocationDto())
+    override fun saveLocation(location: Location) {
+        val locationJson = Json.encodeToString(serializer(), location.toSearchLocationDto())
 
         prefs.edit()
-            .putString(WeatherPrefs.LOCATION_KEY, location)
+            .putString(WeatherPrefs.LOCATION_KEY, locationJson)
             .apply()
     }
 
-    override fun getLastSavedLocation(): Flow<SearchLocation?> = flow {
+    override fun getLastSavedLocation(): Flow<Location?> = flow {
         val locationString = prefs.getString(WeatherPrefs.LOCATION_KEY, null)
 
         if (locationString != null) {
-            val location = Json.decodeFromString<SearchLocationDto>(locationString).toSearchLocation()
+            val location = Json.decodeFromString<SearchLocationDto>(locationString).toLocation()
             emit(location)
         } else {
             emit(null)

@@ -4,12 +4,12 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import ru.lonelywh1te.justweather.databinding.ItemLocationBinding
-import ru.lonelywh1te.justweather.domain.models.SearchLocation
+import ru.lonelywh1te.justweather.domain.models.Location
 
 class SearchLocationAdapter(
-    private val onLocationClick: (SearchLocation) -> Unit
+    private val onLocationClick: (Location) -> Unit
 ): RecyclerView.Adapter<SearchLocationViewHolder>() {
-    private var list = listOf<SearchLocation>()
+    private var list = listOf<Location>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SearchLocationViewHolder {
         val binding = ItemLocationBinding.inflate(LayoutInflater.from(parent.context), parent, false)
@@ -24,14 +24,14 @@ class SearchLocationAdapter(
         holder.bind(location)
     }
 
-    fun submit(list: List<SearchLocation>) {
+    fun submit(list: List<Location>) {
         this.list = list
         notifyDataSetChanged()
     }
 }
 
 class SearchLocationViewHolder(private val binding: ItemLocationBinding): RecyclerView.ViewHolder(binding.root) {
-    fun bind(location: SearchLocation) {
+    fun bind(location: Location) {
         binding.tvName.text = location.name
         binding.tvRegion.text = location.region
     }
