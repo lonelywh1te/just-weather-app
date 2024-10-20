@@ -5,7 +5,19 @@
     android:layout_height="match_parent"
     xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
+    android:gravity="center"
     android:padding="20dp">
+
+    <TextView
+        android:id="@+id/tv_hello_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textAlignment="center"
+        android:text="Добро пожаловать в JustWeather!\n\nЧтобы предоставить прогноз погоды, выберите ваш город или предоставьте данные о вашем местоположении нажав на значок"
+        app:drawableBottomCompat="@drawable/ic_location"
+        android:drawablePadding="10dp"
+        android:visibility="gone"
+        tools:visibility="visible"/>
 
     <ProgressBar
         android:id="@+id/pb_loading"
@@ -16,6 +28,7 @@
         tools:visibility="visible"/>
 
     <LinearLayout
+        android:id="@+id/add_metrics_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintEnd_toEndOf="parent"
@@ -82,6 +95,7 @@
     </LinearLayout>
 
     <LinearLayout
+        android:id="@+id/main_metrics_layout"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:orientation="vertical"
@@ -146,6 +160,7 @@
     </LinearLayout>
 
     <TextView
+        android:id="@+id/tv_three_days_forecast_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="прогноз на 3 дня"
@@ -154,6 +169,7 @@
         android:paddingVertical="15dp"/>
 
     <LinearLayout
+        android:id="@+id/three_days_forecast_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
@@ -227,6 +243,7 @@
 
 
     <LinearLayout
+        android:id="@+id/last_update_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"

@@ -7,5 +7,5 @@ import ru.lonelywh1te.justweather.domain.state.ResponseState
 interface SearchLocationRepository {
     fun searchLocation(locationQuery: String): Flow<ResponseState<List<Location>>>
     fun saveLocation(location: Location)
-    fun getLastSavedLocation(): Flow<Location?>
+    fun getLastSavedLocation(): Flow<ResponseState<Location>>
 }

@@ -14,7 +14,6 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.snackbar.Snackbar
-import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.activityViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -61,8 +60,17 @@ class WeatherFragment : Fragment(), MenuProvider {
                 }
 
                 launch {
-                    activityViewModel.userLocation.collectLatest { location ->
-                        location?.let { viewModel.getForecastWeatherInfo(location.name) }
+                    activityViewModel.userLocation.collect { state ->
+                        when (state) {
+                            is UIState.Success -> {
+                                viewModel.getForecastWeatherInfo(state.data.name)
+                                firstLaunchView(false)
+                            }
+                            is UIState.Error -> {
+                                firstLaunchView(true)
+                            }
+                            else -> throw Exception("Unknown state")
+                        }
                     }
                 }
             }
@@ -85,6 +93,26 @@ class WeatherFragment : Fragment(), MenuProvider {
                 showError(state)
             }
             else -> return
+        }
+    }
+
+    private fun firstLaunchView(isFirstLaunch: Boolean) {
+        if (isFirstLaunch) {
+            binding.tvHelloText.visibility = View.VISIBLE
+
+            binding.addMetricsLayout.visibility = View.GONE
+            binding.mainMetricsLayout.visibility = View.GONE
+            binding.tvThreeDaysForecastTitle.visibility = View.GONE
+            binding.threeDaysForecastLayout.visibility = View.GONE
+            binding.lastUpdateLayout.visibility = View.GONE
+        } else {
+            binding.tvHelloText.visibility = View.GONE
+
+            binding.addMetricsLayout.visibility = View.VISIBLE
+            binding.mainMetricsLayout.visibility = View.VISIBLE
+            binding.tvThreeDaysForecastTitle.visibility = View.VISIBLE
+            binding.threeDaysForecastLayout.visibility = View.VISIBLE
+            binding.lastUpdateLayout.visibility = View.VISIBLE
         }
     }
 

@@ -12,12 +12,14 @@ import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupActionBarWithNavController
-import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.getViewModel
 import ru.lonelywh1te.justweather.R
 import ru.lonelywh1te.justweather.databinding.ActivityMainBinding
+import ru.lonelywh1te.justweather.presentation.state.UIState
 import ru.lonelywh1te.justweather.presentation.viewmodel.MainActivityViewModel
+
+private const val LOG_TAG = "MainActivity"
 
 class MainActivity: AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
@@ -43,10 +45,10 @@ class MainActivity: AppCompatActivity() {
 
             when (destination.id) {
                 R.id.weatherFragment -> {
-                    if (binding.etSearchField.visibility == View.VISIBLE) hideSearchField()
-                    hideKeyboard()
+                    observeUserLocation()
 
-                    showToolbarTitle(viewModel.userLocation.value?.name ?: "Выберите город")
+                    hideSearchField()
+                    hideKeyboard()
                     showLocationButton()
 
                     binding.toolbarTitle.setOnClickListener {
@@ -67,15 +69,22 @@ class MainActivity: AppCompatActivity() {
             }
         }
 
-        observeUserLocation()
         setContentView(binding.root)
     }
 
     private fun observeUserLocation() {
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
-                viewModel.userLocation.collectLatest { location ->
-                    showToolbarTitle(location?.name.toString())
+                viewModel.userLocation.collect { state ->
+                    when (state) {
+                        is UIState.Success -> {
+                            showToolbarTitle(state.data.name)
+                        }
+                        is UIState.Error -> {
+                            showToolbarTitle("Выбрать город")
+                        }
+                        else -> throw Exception("Unknown state")
+                    }
                 }
             }
         }

@@ -53,15 +53,14 @@ class SearchLocationRepositoryImpl(
             .apply()
     }
 
-    override fun getLastSavedLocation(): Flow<Location?> = flow {
+    override fun getLastSavedLocation(): Flow<ResponseState<Location>> = flow {
         val locationString = prefs.getString(WeatherPrefs.LOCATION_KEY, null)
 
         if (locationString != null) {
             val location = Json.decodeFromString<SearchLocationDto>(locationString).toLocation()
-            emit(location)
+            emit(ResponseState.Success(location))
         } else {
-            emit(null)
+            emit(ResponseState.Error(null, Exception("Location data not found.")))
         }
-
     }
 }

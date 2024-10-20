@@ -16,7 +16,8 @@ val appModule = module {
 
     viewModel<WeatherFragmentViewModel> {
         WeatherFragmentViewModel(
-            getThreeDaysForecastWeatherUseCase = get()
+            getThreeDaysForecastWeatherUseCase = get(),
+            selectLocationUseCase = get()
         )
     }
 

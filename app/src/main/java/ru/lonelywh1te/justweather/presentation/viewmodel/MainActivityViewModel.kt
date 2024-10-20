@@ -7,14 +7,16 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import ru.lonelywh1te.justweather.domain.models.Location
 import ru.lonelywh1te.justweather.domain.usecases.GetLatestSearchLocationUseCase
+import ru.lonelywh1te.justweather.presentation.state.UIState
+import ru.lonelywh1te.justweather.presentation.state.toUIState
 
 private const val LOG_TAG = "MainActivityViewModel"
 
 class MainActivityViewModel(
     private val getLatestSearchLocationUseCase: GetLatestSearchLocationUseCase
 ): ViewModel() {
-    private val _userLocation = MutableStateFlow<Location?>(null)
-    val userLocation: StateFlow<Location?> get() = _userLocation
+    private val _userLocation = MutableStateFlow<UIState<Location>>(UIState.Init)
+    val userLocation: StateFlow<UIState<Location>> get() = _userLocation
 
     private val _locationQuery = MutableStateFlow("")
     val locationQuery: StateFlow<String> get() = _locationQuery
@@ -24,8 +26,8 @@ class MainActivityViewModel(
     }
 
     fun getLastUserLocation() = viewModelScope.launch {
-        getLatestSearchLocationUseCase.execute().collect { location ->
-            _userLocation.value = location
+        getLatestSearchLocationUseCase.execute().collect { state ->
+            _userLocation.value = state.toUIState()
         }
     }
 
