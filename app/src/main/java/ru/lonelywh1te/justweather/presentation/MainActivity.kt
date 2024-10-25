@@ -5,6 +5,7 @@ import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
 import android.view.inputmethod.InputMethodManager
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
@@ -12,10 +13,12 @@ import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupActionBarWithNavController
+import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.getViewModel
 import ru.lonelywh1te.justweather.R
 import ru.lonelywh1te.justweather.databinding.ActivityMainBinding
+import ru.lonelywh1te.justweather.domain.models.Location
 import ru.lonelywh1te.justweather.presentation.state.UIState
 import ru.lonelywh1te.justweather.presentation.viewmodel.MainActivityViewModel
 
@@ -45,7 +48,7 @@ class MainActivity: AppCompatActivity() {
 
             when (destination.id) {
                 R.id.weatherFragment -> {
-                    observeUserLocation()
+                    initFlowCollectors()
 
                     hideSearchField()
                     hideKeyboard()
@@ -72,22 +75,56 @@ class MainActivity: AppCompatActivity() {
         setContentView(binding.root)
     }
 
-    private fun observeUserLocation() {
+    private fun initFlowCollectors() {
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
-                viewModel.userLocation.collect { state ->
-                    when (state) {
-                        is UIState.Success -> {
-                            showToolbarTitle(state.data.name)
+                launch {
+                    viewModel.userLocation.collect { state ->
+                        when (state) {
+                            is UIState.Success -> {
+                                showToolbarTitle(state.data.name)
+                            }
+                            is UIState.Error -> {
+                                showToolbarTitle("Выбрать город")
+                            }
+                            is UIState.Loading -> {}
+                            is UIState.Init -> {}
                         }
-                        is UIState.Error -> {
-                            showToolbarTitle("Выбрать город")
-                        }
-                        else -> throw Exception("Unknown state")
                     }
                 }
+
+                launch {
+                    viewModel.foundLocation.collect { state ->
+                        when (state) {
+                            is UIState.Success -> {
+                                showCheckLocationDialog(state.data)
+                            }
+                            is UIState.Error -> {
+                                Snackbar.make(binding.root, "Не удалось определить ваше местоположение", Snackbar.LENGTH_LONG).show()
+                            }
+                            else -> {}
+                        }
+                    }
+                }
+
             }
         }
+    }
+
+    private fun showCheckLocationDialog(location: Location) {
+        val dialog = AlertDialog.Builder(this)
+            .setTitle("Вы сейчас находитесь в городе ${location.name}")
+            .setMessage("Ваше местоположение определено верно?")
+            .setPositiveButton("Да") { dialog, _ ->
+                viewModel.selectUserLocation(location)
+                dialog.dismiss()
+            }
+            .setNegativeButton("Нет") { dialog, _ ->
+                navController.navigate(R.id.to_searchCityFragment)
+                dialog.dismiss()
+            }
+
+        dialog.show()
     }
 
     private fun showToolbarTitle(title: String) {

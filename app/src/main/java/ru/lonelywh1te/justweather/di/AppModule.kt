@@ -10,21 +10,21 @@ val appModule = module {
 
     viewModel<MainActivityViewModel> {
         MainActivityViewModel(
-            getLatestSearchLocationUseCase = get()
+            getLatestSearchLocationUseCase = get(),
+            selectLocationUseCase = get(),
+            searchLocationUseCase = get(),
         )
     }
 
     viewModel<WeatherFragmentViewModel> {
         WeatherFragmentViewModel(
             getThreeDaysForecastWeatherUseCase = get(),
-            selectLocationUseCase = get()
         )
     }
 
     viewModel<SearchLocationViewModel> {
         SearchLocationViewModel(
             searchLocationUseCase = get(),
-            selectLocationUseCase = get(),
         )
     }
 

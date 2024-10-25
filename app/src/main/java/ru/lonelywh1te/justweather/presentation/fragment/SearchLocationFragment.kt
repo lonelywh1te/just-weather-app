@@ -44,8 +44,7 @@ class SearchLocationFragment : Fragment(), MenuProvider {
 
         rvAdapter = SearchLocationAdapter(onLocationClick = { location ->
             lifecycleScope.launch {
-                viewModel.select(location)
-                activityViewModel.getLastUserLocation()
+                activityViewModel.selectUserLocation(location)
                 findNavController().popBackStack()
             }
         })

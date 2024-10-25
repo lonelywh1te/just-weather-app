@@ -1,5 +1,7 @@
 package ru.lonelywh1te.justweather.presentation.fragment
 
+import android.Manifest
+import android.content.pm.PackageManager
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.Menu
@@ -7,12 +9,18 @@ import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import androidx.core.view.MenuProvider
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
+import com.google.android.gms.location.FusedLocationProviderClient
+import com.google.android.gms.location.LocationServices
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.activityViewModel
@@ -26,6 +34,7 @@ import ru.lonelywh1te.justweather.presentation.viewmodel.MainActivityViewModel
 import ru.lonelywh1te.justweather.presentation.viewmodel.WeatherFragmentViewModel
 
 private const val LOG_TAG = "WeatherFragment"
+private const val PERMISSION_ACCESS_COARSE_LOCATION = Manifest.permission.ACCESS_COARSE_LOCATION
 
 class WeatherFragment : Fragment(), MenuProvider {
     private var _binding: FragmentWeatherBinding? = null
@@ -33,6 +42,21 @@ class WeatherFragment : Fragment(), MenuProvider {
 
     private val activityViewModel by activityViewModel<MainActivityViewModel>()
     private val viewModel by viewModel<WeatherFragmentViewModel>()
+    private lateinit var requestPermissionLauncher: ActivityResultLauncher<String>
+    private lateinit var fusedLocationClient: FusedLocationProviderClient
+
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        requestPermissionLauncher = registerForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted: Boolean ->
+            if (isGranted) {
+                findUserLocation()
+            } else {
+                showError(UIState.Error<Nothing>(null, Exception("Для определения местоположения необходимо разрешение")))
+            }
+        }
+        fusedLocationClient = LocationServices.getFusedLocationProviderClient(requireActivity())
+    }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         _binding = FragmentWeatherBinding.inflate(inflater, container, false)
@@ -56,6 +80,7 @@ class WeatherFragment : Fragment(), MenuProvider {
                 launch {
                     viewModel.currentWeatherState.collect { state ->
                         updateUI(state)
+                        firstLaunchView(false)
                     }
                 }
 
@@ -64,7 +89,6 @@ class WeatherFragment : Fragment(), MenuProvider {
                         when (state) {
                             is UIState.Success -> {
                                 viewModel.getForecastWeatherInfo(state.data.name)
-                                firstLaunchView(false)
                             }
                             is UIState.Error -> {
                                 firstLaunchView(true)
@@ -94,6 +118,8 @@ class WeatherFragment : Fragment(), MenuProvider {
             }
             else -> return
         }
+
+        binding.tvThirdDayName.text = UiUtils.getThirdDayName()
     }
 
     private fun firstLaunchView(isFirstLaunch: Boolean) {
@@ -122,7 +148,6 @@ class WeatherFragment : Fragment(), MenuProvider {
         binding.tvCurrentTemp.text = weatherInfo.current.tempC.toString()
         binding.tvWindSpeedValue.text = weatherInfo.current.windKph.toString()
         binding.tvUvValue.text = weatherInfo.current.uv.toString()
-        binding.tvThirdDayName.text = UiUtils.getThirdDayName()
 
         weatherInfo.forecast?.let { forecast ->
             binding.tvMinTemp.text = UiUtils.toTempPattern(forecast.forecastDays[0].day.minTempC)
@@ -151,6 +176,33 @@ class WeatherFragment : Fragment(), MenuProvider {
             .show()
     }
 
+
+    private fun findUserLocation() {
+        if (ActivityCompat.checkSelfPermission(requireContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            requestLocationPermission()
+            return
+        }
+
+        fusedLocationClient.lastLocation
+            .addOnSuccessListener { location ->
+                location?.let {
+                    activityViewModel.findUserLocation(it.latitude, it.longitude)
+                }
+            }
+            .addOnFailureListener {
+                showError(UIState.Error<Nothing>(null, Exception("Не удалось определить местоположение")))
+            }
+    }
+
+
+    private fun requestLocationPermission() {
+        if (ContextCompat.checkSelfPermission(requireContext(), PERMISSION_ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+            findUserLocation()
+        } else {
+            requestPermissionLauncher.launch(PERMISSION_ACCESS_COARSE_LOCATION)
+        }
+    }
+
     override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
         menuInflater.inflate(R.menu.main_menu, menu)
     }
@@ -158,7 +210,7 @@ class WeatherFragment : Fragment(), MenuProvider {
     override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
         when (menuItem.itemId) {
             R.id.settings -> findNavController().navigate(R.id.to_settingsFragment)
-            android.R.id.home -> TODO("Location button not yet implemented")
+            android.R.id.home -> findUserLocation()
         }
 
         return true
