@@ -18,9 +18,11 @@ class WeatherFragmentViewModel(
     private val _currentWeatherState = MutableStateFlow<UIState<WeatherInfo>>(UIState.Init)
     val currentWeatherState: StateFlow<UIState<WeatherInfo>> get() = _currentWeatherState
 
-    fun getForecastWeatherInfo(locationQuery: String) = viewModelScope.launch {
-        getThreeDaysForecastWeatherUseCase.execute(locationQuery).collect { state ->
-            _currentWeatherState.emit(state.toUIState())
+    fun getForecastWeatherInfo(locationQuery: String) {
+        viewModelScope.launch {
+            getThreeDaysForecastWeatherUseCase.execute(locationQuery).collect { state ->
+                _currentWeatherState.value = state.toUIState()
+            }
         }
     }
 }

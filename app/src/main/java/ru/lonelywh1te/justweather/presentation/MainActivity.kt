@@ -1,5 +1,7 @@
 package ru.lonelywh1te.justweather.presentation
 
+import android.content.Context
+import android.content.res.Configuration
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -21,6 +23,7 @@ import ru.lonelywh1te.justweather.databinding.ActivityMainBinding
 import ru.lonelywh1te.justweather.domain.models.Location
 import ru.lonelywh1te.justweather.presentation.state.UIState
 import ru.lonelywh1te.justweather.presentation.viewmodel.MainActivityViewModel
+import java.util.Locale
 
 private const val LOG_TAG = "MainActivity"
 
@@ -106,20 +109,19 @@ class MainActivity: AppCompatActivity() {
                         }
                     }
                 }
-
             }
         }
     }
 
     private fun showCheckLocationDialog(location: Location) {
         val dialog = AlertDialog.Builder(this)
-            .setTitle("Вы сейчас находитесь в городе ${location.name}")
-            .setMessage("Ваше местоположение определено верно?")
-            .setPositiveButton("Да") { dialog, _ ->
+            .setTitle(getString(R.string.you_are_currently_in_the_city_of, location.name))
+            .setMessage(getString(R.string.is_your_location))
+            .setPositiveButton(getString(R.string.yes)) { dialog, _ ->
                 viewModel.selectUserLocation(location)
                 dialog.dismiss()
             }
-            .setNegativeButton("Нет") { dialog, _ ->
+            .setNegativeButton(getString(R.string.no)) { dialog, _ ->
                 navController.navigate(R.id.to_searchCityFragment)
                 dialog.dismiss()
             }

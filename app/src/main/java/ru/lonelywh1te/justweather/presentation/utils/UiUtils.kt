@@ -18,7 +18,7 @@ object UiUtils {
     fun getThirdDayName(): String {
         val date = Calendar.getInstance()
         date.add(Calendar.DAY_OF_WEEK, 2)
-        return date.getDisplayName(Calendar.DAY_OF_WEEK, Calendar.LONG, Locale.getDefault())!!
+        return date.getDisplayName(Calendar.DAY_OF_WEEK, Calendar.LONG, Locale.getDefault())!!.replaceFirstChar { if (it.isLowerCase()) it.titlecase(Locale.getDefault()) else it.toString() }
     }
 
     fun dateFormat(date: Date, pattern: String): String {

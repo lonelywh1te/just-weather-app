@@ -9,7 +9,7 @@ import kotlinx.serialization.json.Json
 import kotlinx.serialization.serializer
 import ru.lonelywh1te.justweather.data.network.WeatherApi
 import ru.lonelywh1te.justweather.data.network.dto.weather.WeatherResponse
-import ru.lonelywh1te.justweather.data.prefs.WeatherPrefs
+import ru.lonelywh1te.justweather.data.prefs.SharedPrefs
 import ru.lonelywh1te.justweather.domain.WeatherInfoRepository
 import ru.lonelywh1te.justweather.domain.models.WeatherInfo
 import ru.lonelywh1te.justweather.domain.state.ResponseState
@@ -42,7 +42,7 @@ class WeatherInfoRepositoryImpl(
         val weatherResponseJson = Json.encodeToString(serializer(), weatherResponse)
 
         prefs.edit()
-            .putString(WeatherPrefs.WEATHER_INFO_KEY, weatherResponseJson)
+            .putString(SharedPrefs.WEATHER_INFO_KEY, weatherResponseJson)
             .apply()
     }
 
@@ -72,7 +72,7 @@ class WeatherInfoRepositoryImpl(
     }
 
     override fun getLastSavedWeatherInfo(): Flow<ResponseState<WeatherInfo>> = flow {
-        val weatherResponseJson = prefs.getString(WeatherPrefs.WEATHER_INFO_KEY, null)
+        val weatherResponseJson = prefs.getString(SharedPrefs.WEATHER_INFO_KEY, null)
 
         if (weatherResponseJson != null) {
             val weatherResponse = Json.decodeFromString<WeatherResponse>(serializer(), weatherResponseJson)

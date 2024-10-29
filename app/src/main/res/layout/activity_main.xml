@@ -20,7 +20,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="18sp"
-            android:text="Хабаровск"/>
+            tools:text="Хабаровск"/>
 
         <EditText
             android:id="@+id/et_search_field"

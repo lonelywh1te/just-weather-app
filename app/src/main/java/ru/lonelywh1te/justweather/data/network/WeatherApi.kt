@@ -1,5 +1,6 @@
 package ru.lonelywh1te.justweather.data.network
 
+import android.content.Context
 import kotlinx.serialization.json.Json
 import okhttp3.MediaType
 import okhttp3.OkHttpClient
@@ -28,11 +29,11 @@ interface WeatherApi {
 
 }
 
-fun weatherApi(baseUrl: String, apiKey: String): WeatherApi {
+fun weatherApi(baseUrl: String, apiKey: String, context: Context): WeatherApi {
     val contentType = MediaType.get("application/json")
 
     val client = OkHttpClient.Builder()
-        .addInterceptor(WeatherApiKeyInterceptor(apiKey))
+        .addInterceptor(WeatherInterceptor(apiKey, context))
         .build()
 
     val retrofit = Retrofit.Builder()

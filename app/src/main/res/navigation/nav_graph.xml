@@ -24,7 +24,7 @@
     <fragment
         android:id="@+id/settingsFragment"
         android:name="ru.lonelywh1te.justweather.presentation.fragment.SettingsFragment"
-        android:label="Настройки"
+        android:label="@string/settings"
         tools:layout="@layout/fragment_settings" />
 
 </navigation>

@@ -18,6 +18,7 @@ android {
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 
         buildConfigField("String", "WEATHER_PREFERENCES_NAME", "\"weather_preferences\"")
+        buildConfigField("String", "SETTINGS_PREFERENCES_NAME", "\"settings_preferences\"")
         buildConfigField("String", "WEATHER_BASE_URL", "\"https://api.weatherapi.com/v1/\"")
         buildConfigField("String", "WEATHER_API_KEY", "YOUR_API_KEY")
     }

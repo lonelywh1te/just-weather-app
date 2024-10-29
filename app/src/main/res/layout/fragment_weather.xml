@@ -13,7 +13,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textAlignment="center"
-        android:text="Добро пожаловать в JustWeather!\n\nЧтобы предоставить прогноз погоды, выберите ваш город или предоставьте данные о вашем местоположении нажав на значок"
+        android:text="@string/hello_text"
         app:drawableBottomCompat="@drawable/ic_location"
         android:drawablePadding="10dp"
         android:visibility="gone"
@@ -22,7 +22,7 @@
     <ProgressBar
         android:id="@+id/pb_loading"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="50dp"
         android:paddingBottom="20dp"
         android:visibility="gone"
         tools:visibility="visible"/>
@@ -47,7 +47,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:gravity="center"
-                android:text="УФИ:"
+                android:text="@string/uv"
                 android:paddingHorizontal="5dp"
                 android:textSize="18sp"
                 android:textStyle="italic" />
@@ -57,7 +57,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:gravity="center"
-                android:text="-.-"
+                android:text="@string/uv_template"
                 android:textSize="18sp"
                 android:textStyle="italic" />
 
@@ -77,18 +77,19 @@
                 android:layout_width="wrap_content"
                 android:layout_height="40dp"
                 android:gravity="center"
-                android:text="-.-"
+                android:text="@string/wind_speed_template"
                 android:paddingHorizontal="5dp"
                 android:textSize="18sp"
                 android:textStyle="italic" />
 
             <TextView
+                android:id="@+id/tv_wind_speed_param"
                 android:layout_width="wrap_content"
                 android:layout_height="40dp"
                 android:gravity="center"
-                android:text="км/ч"
                 android:textSize="18sp"
-                android:textStyle="italic" />
+                android:textStyle="italic"
+                tools:text="км/ч"/>
 
         </LinearLayout>
 
@@ -116,14 +117,14 @@
                 android:alpha="0.5"
                 android:gravity="bottom"
                 android:paddingHorizontal="20dp"
-                android:text="-°"
-                android:textSize="24sp" />
+                android:textSize="24sp"
+                android:text="@string/zero_template"/>
 
             <TextView
                 android:id="@+id/tv_current_temp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="0"
+                android:text="@string/zero"
                 android:textAlignment="textStart"
                 android:textSize="96sp" />
 
@@ -133,10 +134,11 @@
                 android:orientation="vertical">
 
                 <TextView
+                    android:id="@+id/tv_temp_unit"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="°C"
-                    android:textSize="24sp" />
+                    android:textSize="24sp"
+                    tools:text="°C"/>
 
                 <TextView
                     android:id="@+id/tv_max_temp"
@@ -145,7 +147,7 @@
                     android:layout_gravity="bottom"
                     android:alpha="0.5"
                     android:paddingHorizontal="20dp"
-                    android:text="-°"
+                    android:text="@string/zero_template"
                     android:textSize="24sp" />
             </FrameLayout>
         </LinearLayout>
@@ -155,7 +157,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:text="-"
+            tools:text="-"
             android:textSize="18sp" />
     </LinearLayout>
 
@@ -163,7 +165,7 @@
         android:id="@+id/tv_three_days_forecast_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="прогноз на 3 дня"
+        android:text="@string/three_day_forecast"
         android:textSize="18sp"
         android:textStyle="italic"
         android:paddingVertical="15dp"/>
@@ -185,7 +187,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_gravity="start"
-                android:text="cегодня"
+                android:text="@string/today"
                 android:textSize="18sp" />
 
             <TextView
@@ -193,7 +195,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_gravity="end"
-                android:text="-° / -°"
+                android:text="@string/min_max_degrees_template"
                 android:textSize="18sp" />
         </FrameLayout>
 
@@ -206,7 +208,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_gravity="start"
-                android:text="завтра"
+                android:text="@string/tomorrow"
                 android:textSize="18sp"/>
 
             <TextView
@@ -214,7 +216,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_gravity="end"
-                android:text="-° / -°"
+                android:text="@string/min_max_degrees_template"
                 android:textSize="18sp" />
         </FrameLayout>
 
@@ -236,7 +238,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_gravity="end"
-                android:text="-° / -°"
+                android:text="@string/min_max_degrees_template"
                 android:textSize="18sp" />
         </FrameLayout>
     </LinearLayout>
@@ -252,7 +254,7 @@
         <TextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="последнее обновление:"
+            android:text="@string/last_update"
             android:layout_weight="1"
             android:textSize="18sp"
             android:alpha="0.5"
@@ -262,7 +264,7 @@
             android:id="@+id/tv_last_updated_value"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:text="-"
+            tools:text="-"
             android:textSize="18sp"
             android:alpha="0.5"
             android:textStyle="italic"/>

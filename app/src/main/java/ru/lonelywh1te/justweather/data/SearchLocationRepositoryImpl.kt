@@ -8,7 +8,7 @@ import kotlinx.serialization.json.Json
 import kotlinx.serialization.serializer
 import ru.lonelywh1te.justweather.data.network.WeatherApi
 import ru.lonelywh1te.justweather.data.network.dto.search.SearchLocationDto
-import ru.lonelywh1te.justweather.data.prefs.WeatherPrefs
+import ru.lonelywh1te.justweather.data.prefs.SharedPrefs
 import ru.lonelywh1te.justweather.domain.SearchLocationRepository
 import ru.lonelywh1te.justweather.domain.models.Location
 import ru.lonelywh1te.justweather.domain.state.ResponseState
@@ -49,12 +49,12 @@ class SearchLocationRepositoryImpl(
         val locationJson = Json.encodeToString(serializer(), location.toSearchLocationDto())
 
         prefs.edit()
-            .putString(WeatherPrefs.LOCATION_KEY, locationJson)
+            .putString(SharedPrefs.LOCATION_KEY, locationJson)
             .apply()
     }
 
     override fun getLastSavedLocation(): Flow<ResponseState<Location>> = flow {
-        val locationString = prefs.getString(WeatherPrefs.LOCATION_KEY, null)
+        val locationString = prefs.getString(SharedPrefs.LOCATION_KEY, null)
 
         if (locationString != null) {
             val location = Json.decodeFromString<SearchLocationDto>(locationString).toLocation()

@@ -27,6 +27,8 @@ import org.koin.androidx.viewmodel.ext.android.activityViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.lonelywh1te.justweather.R
 import ru.lonelywh1te.justweather.databinding.FragmentWeatherBinding
+import ru.lonelywh1te.justweather.domain.enums.TemperatureUnit
+import ru.lonelywh1te.justweather.domain.enums.WindSpeedUnit
 import ru.lonelywh1te.justweather.domain.models.WeatherInfo
 import ru.lonelywh1te.justweather.presentation.state.UIState
 import ru.lonelywh1te.justweather.presentation.utils.UiUtils
@@ -145,22 +147,47 @@ class WeatherFragment : Fragment(), MenuProvider {
     private fun updateWeatherInfo(weatherInfo: WeatherInfo) {
         binding.tvLastUpdatedValue.text = UiUtils.dateFormat(weatherInfo.current.lastUpdated, "dd.MM.yyyy HH:mm")
         binding.tvCondition.text = weatherInfo.current.condition.text
-        binding.tvCurrentTemp.text = weatherInfo.current.tempC.toString()
-        binding.tvWindSpeedValue.text = weatherInfo.current.windKph.toString()
         binding.tvUvValue.text = weatherInfo.current.uv.toString()
 
-        weatherInfo.forecast?.let { forecast ->
-            binding.tvMinTemp.text = UiUtils.toTempPattern(forecast.forecastDays[0].day.minTempC)
-            binding.tvMaxTemp.text = UiUtils.toTempPattern(forecast.forecastDays[0].day.maxTempC)
+        when(activityViewModel.windSpeedUnit.value) {
+            WindSpeedUnit.KPH -> {
+                binding.tvWindSpeedParam.text = requireContext().getString(R.string.km_h)
+                binding.tvWindSpeedValue.text = weatherInfo.current.windKph.toString()
+            }
+            WindSpeedUnit.MPH -> {
+                binding.tvWindSpeedParam.text = requireContext().getString(R.string.mph)
+                binding.tvWindSpeedValue.text = weatherInfo.current.windMph.toString()
+            }
+        }
 
+        weatherInfo.forecast?.let { forecast ->
             val forecastDaysValuesList = listOf(
                 binding.tvTodayMinMaxTemp,
                 binding.tvTomorrowMinMaxTemp,
                 binding.tvThirdMinMaxTemp,
             )
 
-            forecastDaysValuesList.forEachIndexed { index, textView ->
-                textView.text = UiUtils.toMinMaxPattern(forecast.forecastDays[index].day.minTempC, forecast.forecastDays[index].day.maxTempC)
+            when (activityViewModel.temperatureUnit.value) {
+                TemperatureUnit.C -> {
+                    binding.tvTempUnit.text = requireContext().getString(R.string.c_unit)
+                    binding.tvCurrentTemp.text = weatherInfo.current.tempC.toString()
+                    binding.tvMinTemp.text = UiUtils.toTempPattern(forecast.forecastDays[0].day.minTempC)
+                    binding.tvMaxTemp.text = UiUtils.toTempPattern(forecast.forecastDays[0].day.maxTempC)
+
+                    forecastDaysValuesList.forEachIndexed { index, textView ->
+                        textView.text = UiUtils.toMinMaxPattern(forecast.forecastDays[index].day.minTempC, forecast.forecastDays[index].day.maxTempC)
+                    }
+                }
+                TemperatureUnit.F -> {
+                    binding.tvTempUnit.text = requireContext().getString(R.string.f_unit)
+                    binding.tvCurrentTemp.text = weatherInfo.current.tempF.toString()
+                    binding.tvMinTemp.text = UiUtils.toTempPattern(forecast.forecastDays[0].day.minTempF)
+                    binding.tvMaxTemp.text = UiUtils.toTempPattern(forecast.forecastDays[0].day.maxTempF)
+
+                    forecastDaysValuesList.forEachIndexed { index, textView ->
+                        textView.text = UiUtils.toMinMaxPattern(forecast.forecastDays[index].day.minTempF, forecast.forecastDays[index].day.maxTempF)
+                    }
+                }
             }
         }
     }
