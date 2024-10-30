@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <attr name="jw_backgroundColor" format="color"/>
+    <attr name="jw_textColor" format="color"/>
+    <attr name="jw_secondaryTextColor" format="color"/>
+    <attr name="jw_surfaceColor" format="color"/>
+    <attr name="jw_surfaceBorderColor" format="color"/>
+    <attr name="jw_uvColor" format="color"/>
+    <attr name="jw_windColor" format="color"/>
+</resources>

@@ -18,9 +18,10 @@
         <TextView
             android:id="@+id/toolbar_title"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="18sp"
-            tools:text="Хабаровск"/>
+            android:layout_height="match_parent"
+            android:gravity="center_vertical"
+            android:textAppearance="@style/TextAppearance.Medium.Default"
+            tools:text="хабаровск"/>
 
         <EditText
             android:id="@+id/et_search_field"

@@ -17,15 +17,14 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             tools:text="Владивосток"
-            android:textSize="18sp"/>
+            android:textAppearance="@style/TextAppearance.Regular.Default"/>
 
         <TextView
             android:id="@+id/tv_region"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             tools:text="Приморский край"
-            android:textSize="16sp"
-            android:textStyle="italic"
+            android:textAppearance="@style/TextAppearance.LightItalic.Small"
             android:alpha="0.5"/>
 
     </LinearLayout>

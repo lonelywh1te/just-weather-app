@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="TextAppearance.Regular" parent="TextAppearance.AppCompat.Body1">
+        <item name="fontFamily">@font/inter_regular</item>
+    </style>
+
+    <style name="TextAppearance.LightItalic" parent="TextAppearance.AppCompat.Body1">
+        <item name="fontFamily">@font/inter_light_italic</item>
+    </style>
+
+    <style name="TextAppearance.Medium" parent="TextAppearance.AppCompat.Headline">
+        <item name="fontFamily">@font/inter_medium</item>
+    </style>
+
+    <style name="TextAppearance.Regular.Default">
+        <item name="android:textSize">18sp</item>
+    </style>
+
+    <style name="TextAppearance.LightItalic.Default">
+        <item name="android:textSize">18sp</item>
+    </style>
+
+    <style name="TextAppearance.Medium.Default">
+        <item name="android:textSize">18sp</item>
+    </style>
+
+    <style name="TextAppearance.Regular.Large">
+        <item name="android:textSize">24sp</item>
+    </style>
+
+    <style name="TextAppearance.Medium.Huge">
+        <item name="android:textSize">96sp</item>
+    </style>
+
+    <style name="TextAppearance.LightItalic.Small">
+        <item name="android:textSize">16sp</item>
+    </style>
+
+
+
+
+
+</resources>

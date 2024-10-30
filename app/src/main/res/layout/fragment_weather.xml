@@ -17,14 +17,7 @@
         app:drawableBottomCompat="@drawable/ic_location"
         android:drawablePadding="10dp"
         android:visibility="gone"
-        tools:visibility="visible"/>
-
-    <ProgressBar
-        android:id="@+id/pb_loading"
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:paddingBottom="20dp"
-        android:visibility="gone"
+        android:textAppearance="@style/TextAppearance.Regular.Default"
         tools:visibility="visible"/>
 
     <LinearLayout
@@ -38,19 +31,25 @@
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="40dp"
-            android:background="@drawable/shape_default_container"
+            android:background="@drawable/shape_round_container"
             android:orientation="horizontal"
             android:layout_marginEnd="10dp"
-            android:paddingHorizontal="15dp">
+            android:paddingHorizontal="10dp">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:src="@drawable/ic_sun"
+                app:tint="?attr/jw_uvColor" />
 
             <TextView
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:gravity="center"
                 android:text="@string/uv"
                 android:paddingHorizontal="5dp"
-                android:textSize="18sp"
-                android:textStyle="italic" />
+                android:textColor="?attr/jw_uvColor"
+                android:textAppearance="@style/TextAppearance.LightItalic.Default"/>
 
             <TextView
                 android:id="@+id/tv_uv_value"
@@ -58,19 +57,24 @@
                 android:layout_height="match_parent"
                 android:gravity="center"
                 android:text="@string/uv_template"
-                android:textSize="18sp"
-                android:textStyle="italic" />
-
+                android:textColor="?attr/jw_uvColor"
+                android:textAppearance="@style/TextAppearance.LightItalic.Default"/>
         </LinearLayout>
 
 
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="40dp"
-            android:background="@drawable/shape_default_container"
+            android:background="@drawable/shape_round_container"
             android:orientation="horizontal"
-            android:paddingHorizontal="15dp"
+            android:paddingHorizontal="10dp"
             android:layout_marginEnd="5dp">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:src="@drawable/ic_wave"
+                app:tint="?attr/jw_windColor" />
 
             <TextView
                 android:id="@+id/tv_wind_speed_value"
@@ -78,20 +82,27 @@
                 android:layout_height="40dp"
                 android:gravity="center"
                 android:text="@string/wind_speed_template"
+                android:textColor="?attr/jw_windColor"
                 android:paddingHorizontal="5dp"
-                android:textSize="18sp"
-                android:textStyle="italic" />
+                android:textAppearance="@style/TextAppearance.LightItalic.Default" />
 
             <TextView
                 android:id="@+id/tv_wind_speed_param"
                 android:layout_width="wrap_content"
                 android:layout_height="40dp"
                 android:gravity="center"
-                android:textSize="18sp"
-                android:textStyle="italic"
+                android:textColor="?attr/jw_windColor"
+                android:textAppearance="@style/TextAppearance.LightItalic.Default"
                 tools:text="км/ч"/>
 
         </LinearLayout>
+
+        <ProgressBar
+            android:id="@+id/pb_loading"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="gone"
+            tools:visibility="visible"/>
 
     </LinearLayout>
 
@@ -117,7 +128,7 @@
                 android:alpha="0.5"
                 android:gravity="bottom"
                 android:paddingHorizontal="20dp"
-                android:textSize="24sp"
+                android:textAppearance="@style/TextAppearance.Regular.Large"
                 android:text="@string/zero_template"/>
 
             <TextView
@@ -126,7 +137,7 @@
                 android:layout_height="wrap_content"
                 android:text="@string/zero"
                 android:textAlignment="textStart"
-                android:textSize="96sp" />
+                android:textAppearance="@style/TextAppearance.Medium.Huge" />
 
             <FrameLayout
                 android:layout_width="wrap_content"
@@ -137,7 +148,7 @@
                     android:id="@+id/tv_temp_unit"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:textSize="24sp"
+                    android:textAppearance="@style/TextAppearance.Regular.Large"
                     tools:text="°C"/>
 
                 <TextView
@@ -148,7 +159,7 @@
                     android:alpha="0.5"
                     android:paddingHorizontal="20dp"
                     android:text="@string/zero_template"
-                    android:textSize="24sp" />
+                    android:textAppearance="@style/TextAppearance.Regular.Large" />
             </FrameLayout>
         </LinearLayout>
 
@@ -158,7 +169,7 @@
             android:layout_height="wrap_content"
             android:gravity="center"
             tools:text="-"
-            android:textSize="18sp" />
+            android:textAppearance="@style/TextAppearance.Regular.Default" />
     </LinearLayout>
 
     <TextView
@@ -166,8 +177,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/three_day_forecast"
-        android:textSize="18sp"
-        android:textStyle="italic"
+        android:textAppearance="@style/TextAppearance.Medium.Default"
         android:paddingVertical="15dp"/>
 
     <LinearLayout
@@ -188,7 +198,7 @@
                 android:layout_height="match_parent"
                 android:layout_gravity="start"
                 android:text="@string/today"
-                android:textSize="18sp" />
+                android:textAppearance="@style/TextAppearance.Regular.Default" />
 
             <TextView
                 android:id="@+id/tv_today_min_max_temp"
@@ -196,7 +206,7 @@
                 android:layout_height="match_parent"
                 android:layout_gravity="end"
                 android:text="@string/min_max_degrees_template"
-                android:textSize="18sp" />
+                android:textAppearance="@style/TextAppearance.Regular.Default" />
         </FrameLayout>
 
         <FrameLayout
@@ -217,7 +227,7 @@
                 android:layout_height="match_parent"
                 android:layout_gravity="end"
                 android:text="@string/min_max_degrees_template"
-                android:textSize="18sp" />
+                android:textAppearance="@style/TextAppearance.Regular.Default" />
         </FrameLayout>
 
         <FrameLayout
@@ -239,7 +249,7 @@
                 android:layout_height="match_parent"
                 android:layout_gravity="end"
                 android:text="@string/min_max_degrees_template"
-                android:textSize="18sp" />
+                android:textAppearance="@style/TextAppearance.Regular.Default" />
         </FrameLayout>
     </LinearLayout>
 
@@ -256,18 +266,16 @@
             android:layout_height="wrap_content"
             android:text="@string/last_update"
             android:layout_weight="1"
-            android:textSize="18sp"
-            android:alpha="0.5"
-            android:textStyle="italic"/>
+            android:textAppearance="@style/TextAppearance.LightItalic.Default"
+            android:alpha="0.5"/>
 
         <TextView
             android:id="@+id/tv_last_updated_value"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             tools:text="-"
-            android:textSize="18sp"
-            android:alpha="0.5"
-            android:textStyle="italic"/>
+            android:textAppearance="@style/TextAppearance.LightItalic.Default"
+            android:alpha="0.5"/>
     </LinearLayout>
 
 </LinearLayout>

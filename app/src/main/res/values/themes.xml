@@ -1,9 +1,19 @@
 <resources>
-    <!-- Base application theme. -->
-    <style name="Base.Theme.Justweatherapp" parent="Theme.Material3.Light.NoActionBar">
-        <!-- Customize your light theme here. -->
-        <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
+    <style name="Base.Theme.JustWeatherApp" parent="Theme.Material3.Light.NoActionBar">
+        <item name="android:statusBarColor">?attr/jw_backgroundColor</item>
+        <item name="android:windowLightStatusBar">true</item>
+        <item name="colorPrimary">?attr/jw_textColor</item>
+        <item name="android:textColor">?attr/jw_textColor</item>
+        <item name="android:colorBackground">?attr/jw_backgroundColor</item>
     </style>
 
-    <style name="Theme.Justweatherapp" parent="Base.Theme.Justweatherapp" />
+    <style name="Theme.JustWeatherApp.Light" parent="Base.Theme.JustWeatherApp" >
+        <item name="jw_backgroundColor">@color/light_200</item>
+        <item name="jw_textColor">@color/dark_300</item>
+        <item name="jw_secondaryTextColor">@color/dark_200</item>
+        <item name="jw_surfaceColor">@color/light_100</item>
+        <item name="jw_surfaceBorderColor">@color/light_300</item>
+        <item name="jw_uvColor">@color/yellow</item>
+        <item name="jw_windColor">@color/blue</item>
+    </style>
 </resources>

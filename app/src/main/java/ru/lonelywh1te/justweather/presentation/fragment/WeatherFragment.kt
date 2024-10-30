@@ -146,7 +146,7 @@ class WeatherFragment : Fragment(), MenuProvider {
 
     private fun updateWeatherInfo(weatherInfo: WeatherInfo) {
         binding.tvLastUpdatedValue.text = UiUtils.dateFormat(weatherInfo.current.lastUpdated, "dd.MM.yyyy HH:mm")
-        binding.tvCondition.text = weatherInfo.current.condition.text
+        binding.tvCondition.text = weatherInfo.current.condition.text.lowercase()
         binding.tvUvValue.text = weatherInfo.current.uv.toString()
 
         when(activityViewModel.windSpeedUnit.value) {
