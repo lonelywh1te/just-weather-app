@@ -26,4 +26,6 @@
     <string name="is_your_location">Ваше местоположение определено верно?</string>
     <string name="yes">да</string>
     <string name="no">нет</string>
+    <string name="choose_city">выбрать город</string>
+    <string name="failed_determine_location">не удалось определить ваше местоположение</string>
 </resources>

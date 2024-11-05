@@ -19,4 +19,6 @@
     <string name="is_your_location">Is your location detected correctly?</string>
     <string name="yes">yes</string>
     <string name="no">no</string>
+    <string name="choose_city">choose a city</string>
+    <string name="failed_determine_location">failed to determine your location</string>
 </resources>

@@ -217,7 +217,7 @@ class WeatherFragment : Fragment(), MenuProvider {
                 }
             }
             .addOnFailureListener {
-                showError(UIState.Error<Nothing>(null, Exception("Не удалось определить местоположение")))
+                showError(UIState.Error<Nothing>(null, Exception(getString(R.string.failed_determine_location))))
             }
     }
 

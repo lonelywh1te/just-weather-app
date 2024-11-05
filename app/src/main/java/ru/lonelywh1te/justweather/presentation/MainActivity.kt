@@ -1,10 +1,9 @@
 package ru.lonelywh1te.justweather.presentation
 
-import android.content.Context
-import android.content.res.Configuration
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import androidx.appcompat.app.AlertDialog
@@ -51,7 +50,11 @@ class MainActivity: AppCompatActivity() {
 
             when (destination.id) {
                 R.id.weatherFragment -> {
-                    initFlowCollectors()
+                    if (viewModel.userLocation.value is UIState.Success) {
+                        showToolbarTitle((viewModel.userLocation.value as UIState.Success<Location>).data.name)
+                    } else {
+                        showToolbarTitle(getString(R.string.choose_city))
+                    }
 
                     hideSearchField()
                     hideKeyboard()
@@ -75,6 +78,7 @@ class MainActivity: AppCompatActivity() {
             }
         }
 
+        initFlowCollectors()
         setContentView(binding.root)
     }
 
@@ -88,7 +92,7 @@ class MainActivity: AppCompatActivity() {
                                 showToolbarTitle(state.data.name)
                             }
                             is UIState.Error -> {
-                                showToolbarTitle("Выбрать город")
+                                showToolbarTitle(getString(R.string.choose_city))
                             }
                             is UIState.Loading -> {}
                             is UIState.Init -> {}
@@ -103,7 +107,8 @@ class MainActivity: AppCompatActivity() {
                                 showCheckLocationDialog(state.data)
                             }
                             is UIState.Error -> {
-                                Snackbar.make(binding.root, "Не удалось определить ваше местоположение", Snackbar.LENGTH_LONG).show()
+                                Snackbar.make(binding.root,
+                                    getString(R.string.failed_determine_location), Snackbar.LENGTH_LONG).show()
                             }
                             else -> {}
                         }
